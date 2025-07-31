@@ -6,3 +6,4 @@ Page partenaires
 Contact : esenca.sport@solidaris.be
 Page qui met en valeur esenca sport via un design adapté à la charte graphique des sponsors principaux
 Chaque sport est sponsorisé par une grosse entreprise
+Avec le soutien de solidaris et la fédération multisport adaptée
