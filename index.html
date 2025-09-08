@@ -515,7 +515,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏓 Tournoi de Tennis de Table v1.1</h1>
+            <h1>🏓 Tournoi de Tennis de Table V1.3</h1>
             <p>Gestion simple et efficace de votre tournoi - 4 tours par joueur</p>
         </div>
         
@@ -1043,13 +1043,13 @@
                                         <div class="set-label">Set ${setIndex + 1}</div>
                                         <div class="set-scores">
                                             <input type="number" class="score-input" 
-                                                   placeholder="0" min="0" max="30"
+                                                   placeholder="" min="0" max="30"
                                                    value="${match.sets[setIndex].player1Score || ''}" 
                                                    ${setDisabled}
                                                    onchange="updateSetScore(${division}, ${globalIndex}, ${setIndex}, 'player1Score', this.value)">
                                             <span class="score-separator">-</span>
                                             <input type="number" class="score-input" 
-                                                   placeholder="0" min="0" max="30"
+                                                   placeholder="" min="0" max="30"
                                                    value="${match.sets[setIndex].player2Score || ''}"
                                                    ${setDisabled}
                                                    onchange="updateSetScore(${division}, ${globalIndex}, ${setIndex}, 'player2Score', this.value)">
