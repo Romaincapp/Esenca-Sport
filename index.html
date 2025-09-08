@@ -3,280 +3,511 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esenca Sport x Decathlon - Sport Accessible pour Tous</title>
+    <title>Tournoi de Tennis de Table</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #0082c3 0%, #004c99 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
         }
-
+        
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            text-align: center;
-            border-top: 5px solid #0082c3;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .logo-placeholder {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #0082c3, #004c99);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: white;
-            font-weight: bold;
-        }
-
-        .decathlon-badge {
-            background: #0082c3;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        h1 {
-            color: #0082c3;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .tagline {
-            font-size: 1.3em;
-            color: #004c99;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .impact-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            border-left: 4px solid #0082c3;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #0082c3;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #004c99;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.9em;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .content-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .sports-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .sport-item {
-            background: linear-gradient(45deg, #0082c3, #0066a3);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .sport-item:hover {
-            transform: scale(1.05);
-            background: linear-gradient(45deg, #004c99, #0082c3);
-        }
-
-        .decathlon-values {
-            background: linear-gradient(135deg, #0082c3 0%, #004c99 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            margin: 30px 0;
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .value-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            text-align: center;
-        }
-
-        .value-icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .partnership-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 20px;
-            margin: 30px 0;
-            border: 3px solid #0082c3;
-        }
-
-        .partnership-benefits {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .benefit-item {
-            background: #f8f9ff;
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 4px solid #0082c3;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #0082c3 0%, #004c99 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .cta-button {
-            display: inline-block;
             background: white;
-            color: #0082c3;
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 20px 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.4);
-        }
-
-        .decathlon-logo-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            margin: 30px 0;
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 25px;
             text-align: center;
-            border: 2px solid #0082c3;
         }
-
-        .brand-collaboration {
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 30px;
-            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
-        .brand-logo {
-            width: 150px;
-            height: 80px;
-            background: #0082c3;
-            border-radius: 10px;
+        
+        input, select, button, textarea {
+            padding: 12px 18px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .import-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #3498db;
+        }
+        
+        .import-box {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .import-box h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+        
+        .file-input-label {
+            display: block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .divisions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .division {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid;
+        }
+        
+        .division-1 { border-top-color: #e74c3c; }
+        .division-2 { border-top-color: #f39c12; }
+        .division-3 { border-top-color: #27ae60; }
+        
+        .division h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+        
+        .players-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            min-height: 60px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .player-tag {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            gap: 8px;
+        }
+        
+        .remove-player {
+            background: rgba(255,255,255,0.3);
+            border: none;
             color: white;
-            font-size: 1.2em;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
         }
-
-        .plus-sign {
-            font-size: 2em;
-            color: #0082c3;
+        
+        .matches-container {
+            margin-top: 20px;
+        }
+        
+        .tour-section {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tour-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tour-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 73, 94, 0.4);
+        }
+        
+        .tour-title {
+            font-size: 1.2rem;
             font-weight: bold;
         }
-
+        
+        .tour-progress {
+            font-size: 14px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+        }
+        
+        .tour-matches {
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .tour-matches.active {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .match {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .match.completed {
+            background: #d5f4e6;
+            border-color: #27ae60;
+        }
+        
+        .match:hover {
+            border-color: #3498db;
+            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .player-names {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .match-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pending {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+        
+        .status-completed {
+            background: #a8e6cf;
+            color: #00b894;
+        }
+        
+        .sets-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .set {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .set-disabled {
+            opacity: 0.5;
+            background: #f0f0f0;
+        }
+        
+        .set-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .set-scores {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .score-input {
+            width: 50px;
+            height: 40px;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        /* Supprimer complètement les flèches dans tous les navigateurs */
+        .score-input::-webkit-outer-spin-button,
+        .score-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .score-input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        
+        .score-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        .set-disabled .score-input {
+            background: #f0f0f0;
+            color: #999;
+            cursor: not-allowed;
+            border-color: #ccc;
+        }
+        
+        .score-separator {
+            font-weight: bold;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
+        .match-result {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 6px;
+        }
+        
+        .result-pending {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+        
+        .result-completed {
+            background: #a8e6cf;
+            color: #00b894;
+        }
+        
+        .stats {
+            margin-top: 30px;
+            background: #2c3e50;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+        
+        .stats h3 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 30px;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .modal-buttons {
+            margin-top: 20px;
+            text-align: right;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
         @media (max-width: 768px) {
-            .main-content {
+            .divisions {
                 grid-template-columns: 1fr;
             }
             
-            h1 {
-                font-size: 2em;
+            .input-group {
+                flex-direction: column;
             }
             
-            .impact-stats {
-                grid-template-columns: repeat(2, 1fr);
+            .import-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .sets-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -284,157 +515,748 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo-area">
-                <div class="logo-placeholder">ES</div>
-                <div>
-                    <h1>Esenca Sport Active</h1>
-                    <div class="tagline">Rendre le Sport Accessible à Tous</div>
-                    <div class="decathlon-badge">Partenaire Potentiel: DECATHLON</div>
-                </div>
-            </div>
+            <h1>🏓 Tournoi de Tennis de Table</h1>
+            <p>Gestion simple et efficace de votre tournoi - 4 tours par joueur</p>
         </div>
-
-        <div class="impact-stats">
-            <div class="stat-card">
-                <div class="stat-number">1500+</div>
-                <div class="stat-label">Sportifs Actifs</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">100+</div>
-                <div class="stat-label">Événements/An</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">20</div>
-                <div class="stat-label">Disciplines</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">80</div>
-                <div class="stat-label">Institutions</div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div class="content-card">
-                <h2 style="color: #0082c3;">🏆 Sport Pour Tous : Notre Mission Commune</h2>
-                <p>Comme Decathlon, nous croyons que <strong>le sport doit être accessible à tous</strong>, sans exception. Esenca Sport Active concrétise cette vision en Wallonie avec plus de 100 événements sportifs adaptés.</p>
+        
+        <div class="content">
+            <div class="section">
+                <h2>👥 Gestion des Joueurs</h2>
                 
-                <h3 style="color: #0082c3;">🎯 Impact Concret</h3>
-                <p>• <strong>1500+ sportifs</strong> accompagnés chaque année<br>
-                • <strong>80 institutions</strong> partenaires en Wallonie<br>
-                • <strong>Inclusion réelle</strong> par le sport adapté</p>
-
-                <h3 style="color: #0082c3;">🏅 Nos Disciplines Sportives</h3>
-                <div class="sports-grid">
-                    <div class="sport-item">Badminton</div>
-                    <div class="sport-item">Basketball</div>
-                    <div class="sport-item">Bowling</div>
-                    <div class="sport-item">Natation</div>
-                    <div class="sport-item">Course à pied</div>
-                    <div class="sport-item">Triathlon</div>
-                    <div class="sport-item">Handifoot</div>
-                    <div class="sport-item">Hippothérapie</div>
-                    <div class="sport-item">Kin-ball</div>
-                    <div class="sport-item">Futsal</div>
-                    <div class="sport-item">Netball</div>
-                    <div class="sport-item">Pétanque</div>
-                    <div class="sport-item">Tennis de table</div>
-                    <div class="sport-item">Tir sportif</div>
-                    <div class="sport-item">Unihoc</div>
-                    <div class="sport-item">Relais vélos</div>
-                    <div class="sport-item">Zumba Adaptée</div>
-                    <div class="sport-item">Voile</div>
+                <!-- Ajout individuel -->
+                <div class="input-group">
+                    <input type="text" id="playerName" placeholder="Nom du joueur" style="flex: 1; min-width: 200px;">
+                    <select id="playerDivision">
+                        <option value="1">Division 1</option>
+                        <option value="2">Division 2</option>
+                        <option value="3">Division 3</option>
+                    </select>
+                    <button class="btn btn-success" onclick="addPlayer()">Ajouter Joueur</button>
                 </div>
-            </div>
-
-            <div class="content-card">
-                <h3 style="color: #0082c3;">🤝 Synergies Decathlon</h3>
-                <p><strong>Matériel Adapté:</strong> Expertise commune pour équipements inclusifs</p>
                 
-                <p><strong>Formation:</strong> Partage de connaissances sport adapté</p>
+                <!-- Import en masse -->
+                <div class="import-section">
+                    <!-- Import Excel -->
+                    <div class="import-box">
+                        <h4>📁 Import fichier Excel/CSV</h4>
+                        <p style="font-size: 14px; color: #7f8c8d; margin-bottom: 15px;">
+                            Format : Colonne A = Noms, Colonne B = Division (1,2,3)
+                        </p>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
+                            <label for="fileInput" class="file-input-label">
+                                📎 Choisir un fichier
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Import texte -->
+                    <div class="import-box">
+                        <h4>📋 Copier-coller par division</h4>
+                        <p style="font-size: 14px; color: #7f8c8d; margin-bottom: 15px;">
+                            Collez une liste de noms (un par ligne)
+                        </p>
+                        <div style="display: flex; gap: 10px; flex-direction: column;">
+                            <select id="bulkDivision" style="width: 100%;">
+                                <option value="1">Division 1</option>
+                                <option value="2">Division 2</option>
+                                <option value="3">Division 3</option>
+                            </select>
+                            <button class="btn" onclick="showBulkInput()" style="width: 100%;">
+                                📝 Ajouter en masse
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 
-                <p><strong>Innovation:</strong> Développement produits accessibles</p>
-                
-                <p><strong>Réseau:</strong> Démultiplication via magasins Decathlon</p>
-
-                <h3 style="color: #0082c3;">📊 ROI Social</h3>
-                <p>• Visibilité positive auprès de 1500+ familles<br>
-                • Image d'entreprise inclusive<br>
-                • Engagement collaborateurs<br>
-                • Innovation produits</p>
+                <button class="btn" onclick="generateMatches()" style="font-size: 18px; padding: 15px 25px;">
+                    🎯 Générer les Matchs par Tours (4 matchs/joueur - 3 sets/match)
+                </button>
             </div>
-        </div>
-
-        <div class="decathlon-values">
-            <h2>🌟 Valeurs Partagées : Sport & Inclusion</h2>
-            <div class="values-grid">
-                <div class="value-item">
-                    <div class="value-icon">🎯</div>
-                    <h4>Accessibilité</h4>
-                    <p>Rendre le sport accessible à tous, quelles que soient les capacités</p>
-                </div>
-                <div class="value-item">
-                    <div class="value-icon">💪</div>
-                    <h4>Dépassement</h4>
-                    <p>Encourager chaque personne à révéler son potentiel</p>
-                </div>
-                <div class="value-item">
-                    <div class="value-icon">🤝</div>
-                    <h4>Solidarité</h4>
-                    <p>Créer du lien social par le sport</p>
-                </div>
-                <div class="value-item">
-                    <div class="value-icon">🏆</div>
-                    <h4>Excellence</h4>
-                    <p>Viser l'excellence dans l'accompagnement</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="partnership-section">
-            <h2 style="color: #0082c3;">🚀 Partenariat Stratégique Decathlon x Esenca</h2>
-            <div class="partnership-benefits">
-                <div class="benefit-item">
-                    <h4>🏪 Visibilité Magasins</h4>
-                    <p>Présence dans les points de vente Decathlon Wallonie</p>
-                </div>
-                <div class="benefit-item">
-                    <h4>🎽 Co-branding Équipements</h4>
-                    <p>Développement commun matériel sport adapté</p>
-                </div>
-                <div class="benefit-item">
-                    <h4>👥 Formation Collaborateurs</h4>
-                    <p>Sensibilisation équipes au handicap et sport inclusif</p>
-                </div>
-                <div class="benefit-item">
-                    <h4>📱 Communication Digitale</h4>
-                    <p>Campagnes communes réseaux sociaux et newsletters</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="decathlon-logo-section">
-            <h3 style="color: #0082c3;">Un Partenariat d'Impact</h3>
-            <div class="brand-collaboration">
-                <div class="brand-logo">DECATHLON</div>
-                <div class="plus-sign">+</div>
-                <div class="brand-logo" style="background: linear-gradient(45deg, #667eea, #764ba2);">ESENCA</div>
-                <div class="plus-sign">=</div>
-                <div class="brand-logo" style="background: #28a745;">INCLUSION</div>
-            </div>
-        </div>
-
-        <div class="cta-section">
-            <h2>🌟 Construisons Ensemble le Sport de Demain</h2>
-            <p>Decathlon et Esenca Sport : même vision, même ambition. Faisons du sport un vecteur d'inclusion pour tous.</p>
             
-            <a href="mailto:esencia.sport@solidaris.be" class="cta-button">💬 Planifier Rendez-vous</a>
-            <a href="#" class="cta-button">📋 Dossier Partenariat</a>
+            <div class="divisions" id="divisions">
+                <div class="division division-1">
+                    <h3>🥇 Division 1</h3>
+                    <div class="players-list" id="division1Players">
+                        <div class="empty-state">Aucun joueur</div>
+                    </div>
+                    <div class="matches-container" id="division1Matches"></div>
+                </div>
+                
+                <div class="division division-2">
+                    <h3>🥈 Division 2</h3>
+                    <div class="players-list" id="division2Players">
+                        <div class="empty-state">Aucun joueur</div>
+                    </div>
+                    <div class="matches-container" id="division2Matches"></div>
+                </div>
+                
+                <div class="division division-3">
+                    <h3>🥉 Division 3</h3>
+                    <div class="players-list" id="division3Players">
+                        <div class="empty-state">Aucun joueur</div>
+                    </div>
+                    <div class="matches-container" id="division3Matches"></div>
+                </div>
+            </div>
             
-            <p style="margin-top: 20px; font-size: 1.1em;">
-                <strong>Contact:</strong> esencia.sport@solidaris.be<br>
-                <strong>Proposition:</strong> Partenariat Decathlon x Esencia Sport Active
-            </p>
+            <div class="stats" id="stats" style="display: none;">
+                <h3>📊 Statistiques du Tournoi</h3>
+                <div class="stats-grid" id="statsContent"></div>
+            </div>
         </div>
     </div>
+
+    <!-- Modal pour ajout en masse -->
+    <div id="bulkModal" class="modal">
+        <div class="modal-content">
+            <h3>Ajouter plusieurs joueurs</h3>
+            <p style="margin-bottom: 15px; color: #7f8c8d;">
+                Collez la liste des noms (un par ligne) pour la <strong id="selectedDivision">Division 1</strong> :
+            </p>
+            <textarea id="bulkText" placeholder="Joueur 1&#10;Joueur 2&#10;Joueur 3&#10;..." 
+                      style="width: 100%; height: 200px; padding: 15px; border: 2px solid #ddd; border-radius: 8px; font-family: inherit; resize: vertical;"></textarea>
+            <div class="modal-buttons">
+                <button class="btn btn-danger" onclick="closeBulkModal()">Annuler</button>
+                <button class="btn btn-success" onclick="addBulkPlayers()">Ajouter tous</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let players = {
+            1: [],
+            2: [],
+            3: []
+        };
+        
+        let matches = {
+            1: [],
+            2: [],
+            3: []
+        };
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fileInput').addEventListener('change', handleFileImport);
+            
+            // Fermer le modal si on clique à l'extérieur
+            document.getElementById('bulkModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeBulkModal();
+                }
+            });
+            
+            // Fermer avec Escape
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeBulkModal();
+                }
+            });
+            
+            // Permettre d'ajouter un joueur avec Entrée
+            document.getElementById('playerName').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addPlayer();
+                }
+            });
+        });
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let data;
+                    
+                    if (file.name.endsWith('.csv')) {
+                        const text = e.target.result;
+                        data = parseCSV(text);
+                    } else {
+                        const workbook = XLSX.read(e.target.result, { type: 'binary' });
+                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        data = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    }
+                    
+                    importPlayersFromData(data);
+                    
+                } catch (error) {
+                    alert('Erreur lors de la lecture du fichier : ' + error.message);
+                }
+            };
+            
+            if (file.name.endsWith('.csv')) {
+                reader.readAsText(file);
+            } else {
+                reader.readAsBinaryString(file);
+            }
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            return lines.map(line => {
+                return line.split(/[,;]/).map(cell => cell.trim().replace(/^"(.*)"$/, '$1'));
+            }).filter(row => row[0] && row[0].trim());
+        }
+
+        function importPlayersFromData(data) {
+            let imported = 0;
+            let errors = [];
+            
+            data.forEach((row, index) => {
+                if (row.length >= 2) {
+                    const name = String(row[0]).trim();
+                    const division = parseInt(row[1]);
+                    
+                    if (name && [1, 2, 3].includes(division)) {
+                        if (!players[division].includes(name)) {
+                            players[division].push(name);
+                            imported++;
+                        }
+                    } else {
+                        errors.push(`Ligne ${index + 1}: "${row[0]}" division "${row[1]}" invalide`);
+                    }
+                }
+            });
+            
+            updatePlayersDisplay();
+            
+            let message = `✅ ${imported} joueurs importés avec succès !`;
+            if (errors.length > 0 && errors.length < 5) {
+                message += '\n\n⚠️ Erreurs:\n' + errors.slice(0, 5).join('\n');
+            } else if (errors.length >= 5) {
+                message += `\n\n⚠️ ${errors.length} erreurs détectées. Vérifiez le format.`;
+            }
+            
+            alert(message);
+            document.getElementById('fileInput').value = '';
+        }
+
+        function showBulkInput() {
+            const division = document.getElementById('bulkDivision').value;
+            document.getElementById('selectedDivision').textContent = `Division ${division}`;
+            document.getElementById('bulkModal').style.display = 'block';
+            document.getElementById('bulkText').focus();
+        }
+
+        function closeBulkModal() {
+            document.getElementById('bulkModal').style.display = 'none';
+            document.getElementById('bulkText').value = '';
+        }
+
+        function addBulkPlayers() {
+            const text = document.getElementById('bulkText').value.trim();
+            const division = parseInt(document.getElementById('bulkDivision').value);
+            
+            if (!text) {
+                alert('Veuillez entrer au moins un nom de joueur');
+                return;
+            }
+            
+            const names = text.split('\n')
+                             .map(name => name.trim())
+                             .filter(name => name.length > 0);
+            
+            let added = 0;
+            let duplicates = [];
+            
+            names.forEach(name => {
+                if (!players[division].includes(name)) {
+                    players[division].push(name);
+                    added++;
+                } else {
+                    duplicates.push(name);
+                }
+            });
+            
+            updatePlayersDisplay();
+            
+            let message = `✅ ${added} joueurs ajoutés à la Division ${division} !`;
+            if (duplicates.length > 0) {
+                message += `\n\n⚠️ Joueurs déjà présents (ignorés): ${duplicates.join(', ')}`;
+            }
+            
+            alert(message);
+            closeBulkModal();
+        }
+
+        function addPlayer() {
+            const nameInput = document.getElementById('playerName');
+            const divisionSelect = document.getElementById('playerDivision');
+            
+            const name = nameInput.value.trim();
+            const division = parseInt(divisionSelect.value);
+            
+            if (!name) {
+                alert('Veuillez entrer un nom de joueur');
+                return;
+            }
+            
+            if (players[division].includes(name)) {
+                alert('Ce joueur existe déjà dans cette division');
+                return;
+            }
+            
+            players[division].push(name);
+            nameInput.value = '';
+            updatePlayersDisplay();
+        }
+
+        function removePlayer(division, playerName) {
+            players[division] = players[division].filter(p => p !== playerName);
+            matches[division] = matches[division].filter(match => 
+                match.player1 !== playerName && match.player2 !== playerName
+            );
+            updatePlayersDisplay();
+            updateMatchesDisplay();
+            updateStats();
+        }
+
+        function updatePlayersDisplay() {
+            for (let division = 1; division <= 3; division++) {
+                const container = document.getElementById(`division${division}Players`);
+                
+                if (players[division].length === 0) {
+                    container.innerHTML = '<div class="empty-state">Aucun joueur</div>';
+                } else {
+                    container.innerHTML = players[division].map(player => 
+                        `<div class="player-tag">
+                            ${player}
+                            <button class="remove-player" onclick="removePlayer(${division}, '${player}')" title="Supprimer">×</button>
+                        </div>`
+                    ).join('');
+                }
+            }
+        }
+
+        function generateMatches() {
+            for (let division = 1; division <= 3; division++) {
+                const divisionPlayers = players[division];
+                
+                if (divisionPlayers.length < 2) {
+                    if (divisionPlayers.length === 1) {
+                        alert(`Division ${division}: Il faut au moins 2 joueurs pour générer des matchs`);
+                    }
+                    continue;
+                }
+                
+                // Réinitialiser les matchs
+                matches[division] = [];
+                
+                // Organiser les matchs par tours
+                const playerMatchCount = {};
+                
+                // Initialiser le compteur de matchs pour chaque joueur
+                divisionPlayers.forEach(player => {
+                    playerMatchCount[player] = 0;
+                });
+                
+                // Générer les matchs tour par tour
+                for (let tour = 1; tour <= 4; tour++) {
+                    const availablePlayers = divisionPlayers.filter(player => 
+                        playerMatchCount[player] < tour
+                    );
+                    
+                    // Créer des paires pour ce tour
+                    const usedInThisTour = [];
+                    
+                    for (let i = 0; i < availablePlayers.length; i++) {
+                        if (usedInThisTour.includes(availablePlayers[i])) continue;
+                        
+                        const player1 = availablePlayers[i];
+                        
+                        // Trouver un adversaire qui n'a pas encore joué contre player1
+                        for (let j = i + 1; j < availablePlayers.length; j++) {
+                            if (usedInThisTour.includes(availablePlayers[j])) continue;
+                            
+                            const player2 = availablePlayers[j];
+                            
+                            // Vérifier s'ils se sont déjà affrontés
+                            const alreadyPlayed = matches[division].some(match => 
+                                (match.player1 === player1 && match.player2 === player2) ||
+                                (match.player1 === player2 && match.player2 === player1)
+                            );
+                            
+                            if (!alreadyPlayed) {
+                                const matchData = {
+                                    player1: player1,
+                                    player2: player2,
+                                    tour: tour,
+                                    sets: [
+                                        { player1Score: '', player2Score: '' },
+                                        { player1Score: '', player2Score: '' },
+                                        { player1Score: '', player2Score: '' }
+                                    ],
+                                    completed: false,
+                                    winner: null
+                                };
+                                
+                                matches[division].push(matchData);
+                                
+                                playerMatchCount[player1]++;
+                                playerMatchCount[player2]++;
+                                
+                                usedInThisTour.push(player1, player2);
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Compléter si nécessaire
+                let attempts = 0;
+                while (attempts < 100) {
+                    let needMoreMatches = false;
+                    
+                    for (let player of divisionPlayers) {
+                        if (playerMatchCount[player] < 4) {
+                            needMoreMatches = true;
+                            
+                            for (let opponent of divisionPlayers) {
+                                if (opponent === player || playerMatchCount[opponent] >= 4) continue;
+                                
+                                const alreadyPlayed = matches[division].some(match => 
+                                    (match.player1 === player && match.player2 === opponent) ||
+                                    (match.player1 === opponent && match.player2 === player)
+                                );
+                                
+                                if (!alreadyPlayed) {
+                                    const matchData = {
+                                        player1: player,
+                                        player2: opponent,
+                                        tour: Math.min(playerMatchCount[player], playerMatchCount[opponent]) + 1,
+                                        sets: [
+                                            { player1Score: '', player2Score: '' },
+                                            { player1Score: '', player2Score: '' },
+                                            { player1Score: '', player2Score: '' }
+                                        ],
+                                        completed: false,
+                                        winner: null
+                                    };
+                                    
+                                    matches[division].push(matchData);
+                                    playerMatchCount[player]++;
+                                    playerMatchCount[opponent]++;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (!needMoreMatches) break;
+                    attempts++;
+                }
+            }
+            
+            updateMatchesDisplay();
+            updateStats();
+        }
+
+        function updateMatchesDisplay() {
+            for (let division = 1; division <= 3; division++) {
+                const container = document.getElementById(`division${division}Matches`);
+                
+                if (matches[division].length === 0) {
+                    container.innerHTML = '';
+                    continue;
+                }
+                
+                // Organiser les matchs par tour
+                const matchsByTour = {};
+                matches[division].forEach(match => {
+                    if (!matchsByTour[match.tour]) {
+                        matchsByTour[match.tour] = [];
+                    }
+                    matchsByTour[match.tour].push(match);
+                });
+                
+                let html = '';
+                
+                // Afficher chaque tour
+                for (let tour = 1; tour <= 4; tour++) {
+                    if (matchsByTour[tour] && matchsByTour[tour].length > 0) {
+                        const tourMatches = matchsByTour[tour];
+                        const completedMatches = tourMatches.filter(m => m.completed).length;
+                        const totalMatches = tourMatches.length;
+                        
+                        html += `
+                            <div class="tour-section">
+                                <div class="tour-header" onclick="toggleTour(${division}, ${tour})">
+                                    <div class="tour-title">🎯 Tour ${tour}</div>
+                                    <div class="tour-progress">${completedMatches}/${totalMatches} terminés</div>
+                                </div>
+                                <div class="tour-matches" id="tour${division}-${tour}">
+                        `;
+                        
+                        tourMatches.forEach((match, matchIndex) => {
+                            const globalIndex = matches[division].indexOf(match);
+                            const matchStatus = match.completed ? 'completed' : 'pending';
+                            const statusClass = match.completed ? 'status-completed' : 'status-pending';
+                            const statusText = match.completed ? 'Terminé' : 'En cours';
+                            
+                            html += `
+                                <div class="match ${matchStatus}">
+                                    <div class="match-header">
+                                        <div class="player-names">${match.player1} VS ${match.player2}</div>
+                                        <div class="match-status ${statusClass}">${statusText}</div>
+                                    </div>
+                                    <div class="sets-container">
+                            `;
+                            
+                            // Afficher les 3 sets
+                            for (let setIndex = 0; setIndex < 3; setIndex++) {
+                                // Déterminer si ce set doit être affiché/activé
+                                let setClass = 'set';
+                                let setDisabled = '';
+                                
+                                // Si le match est terminé et qu'on a un gagnant avec 2 sets
+                                if (match.completed) {
+                                    let player1Sets = 0;
+                                    let player2Sets = 0;
+                                    
+                                    // Compter les sets gagnés jusqu'à ce set
+                                    for (let i = 0; i <= setIndex; i++) {
+                                        if (match.sets[i].player1Score !== '' && match.sets[i].player2Score !== '') {
+                                            const score1 = parseInt(match.sets[i].player1Score);
+                                            const score2 = parseInt(match.sets[i].player2Score);
+                                            
+                                            if (score1 > score2) {
+                                                player1Sets++;
+                                            } else if (score2 > score1) {
+                                                player2Sets++;
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Si le match était déjà fini avant ce set, griser le set
+                                    if (setIndex > 1 && (player1Sets >= 2 || player2Sets >= 2)) {
+                                        let setsBeforeThis = 0;
+                                        let p1SetsBeforeThis = 0;
+                                        let p2SetsBeforeThis = 0;
+                                        
+                                        for (let i = 0; i < setIndex; i++) {
+                                            if (match.sets[i].player1Score !== '' && match.sets[i].player2Score !== '') {
+                                                setsBeforeThis++;
+                                                const score1 = parseInt(match.sets[i].player1Score);
+                                                const score2 = parseInt(match.sets[i].player2Score);
+                                                
+                                                if (score1 > score2) {
+                                                    p1SetsBeforeThis++;
+                                                } else if (score2 > score1) {
+                                                    p2SetsBeforeThis++;
+                                                }
+                                            }
+                                        }
+                                        
+                                        if (p1SetsBeforeThis >= 2 || p2SetsBeforeThis >= 2) {
+                                            setClass += ' set-disabled';
+                                            setDisabled = 'disabled';
+                                        }
+                                    }
+                                }
+                                
+                                html += `
+                                    <div class="${setClass}">
+                                        <div class="set-label">Set ${setIndex + 1}</div>
+                                        <div class="set-scores">
+                                            <input type="number" class="score-input" 
+                                                   placeholder="0" min="0" max="30"
+                                                   value="${match.sets[setIndex].player1Score}" 
+                                                   ${setDisabled}
+                                                   onchange="updateSetScore(${division}, ${globalIndex}, ${setIndex}, 'player1Score', this.value)">
+                                            <span class="score-separator">-</span>
+                                            <input type="number" class="score-input" 
+                                                   placeholder="0" min="0" max="30"
+                                                   value="${match.sets[setIndex].player2Score}"
+                                                   ${setDisabled}
+                                                   onchange="updateSetScore(${division}, ${globalIndex}, ${setIndex}, 'player2Score', this.value)">
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                            
+                            // Résultat du match
+                            let resultText = 'En attente des résultats';
+                            let resultClass = 'result-pending';
+                            
+                            if (match.completed && match.winner) {
+                                // Calculer le score en sets
+                                let player1Sets = 0;
+                                let player2Sets = 0;
+                                
+                                match.sets.forEach(set => {
+                                    if (set.player1Score !== '' && set.player2Score !== '') {
+                                        const score1 = parseInt(set.player1Score);
+                                        const score2 = parseInt(set.player2Score);
+                                        
+                                        if (score1 > score2) {
+                                            player1Sets++;
+                                        } else if (score2 > score1) {
+                                            player2Sets++;
+                                        }
+                                    }
+                                });
+                                
+                                const winnerSets = match.winner === match.player1 ? player1Sets : player2Sets;
+                                const loserSets = match.winner === match.player1 ? player2Sets : player1Sets;
+                                
+                                resultText = `🏆 ${match.winner} remporte le match (${winnerSets}-${loserSets})`;
+                                resultClass = 'result-completed';
+                            }
+                            
+                            html += `
+                                    </div>
+                                    <div class="match-result ${resultClass}">
+                                        ${resultText}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        html += `
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                container.innerHTML = html;
+                
+                // Ouvrir le premier tour par défaut
+                setTimeout(() => {
+                    const firstTour = document.getElementById(`tour${division}-1`);
+                    if (firstTour) {
+                        firstTour.classList.add('active');
+                    }
+                }, 100);
+            }
+        }
+
+        function toggleTour(division, tour) {
+            const tourElement = document.getElementById(`tour${division}-${tour}`);
+            if (tourElement) {
+                tourElement.classList.toggle('active');
+            }
+        }
+
+        function updateSetScore(division, matchIndex, setIndex, scoreField, value) {
+            // Mettre à jour le score
+            matches[division][matchIndex].sets[setIndex][scoreField] = value;
+            
+            console.log(`Score mis à jour: Division ${division}, Match ${matchIndex}, Set ${setIndex + 1}, ${scoreField} = ${value}`);
+            
+            // Vérifier si le match est terminé
+            checkMatchCompletion(division, matchIndex);
+            
+            // Mettre à jour l'affichage
+            updateStats();
+            updateMatchesDisplay();
+        }
+
+        function checkMatchCompletion(division, matchIndex) {
+            const match = matches[division][matchIndex];
+            let player1Sets = 0;
+            let player2Sets = 0;
+            let setsPlayed = 0;
+            
+            // Compter les sets gagnés et joués
+            match.sets.forEach(set => {
+                if (set.player1Score !== '' && set.player2Score !== '') {
+                    setsPlayed++;
+                    const score1 = parseInt(set.player1Score);
+                    const score2 = parseInt(set.player2Score);
+                    
+                    if (score1 > score2) {
+                        player1Sets++;
+                    } else if (score2 > score1) {
+                        player2Sets++;
+                    }
+                }
+            });
+            
+            // Match terminé si quelqu'un a 2 sets (best of 3, premier à 2 sets gagne)
+            if (player1Sets >= 2) {
+                match.completed = true;
+                match.winner = match.player1;
+            } else if (player2Sets >= 2) {
+                match.completed = true;
+                match.winner = match.player2;
+            } else {
+                // Match en cours - il faut au moins 2 sets joués pour pouvoir être terminé
+                // Mais si on a joué 3 sets sans qu'un joueur ait 2 victoires, c'est un problème de saisie
+                match.completed = false;
+                match.winner = null;
+            }
+        }
+
+        function updateStats() {
+            let totalPlayers = 0;
+            let totalMatches = 0;
+            let completedMatches = 0;
+            
+            for (let division = 1; division <= 3; division++) {
+                totalPlayers += players[division].length;
+                totalMatches += matches[division].length;
+                completedMatches += matches[division].filter(match => match.completed).length;
+            }
+            
+            const statsDiv = document.getElementById('stats');
+            const statsContent = document.getElementById('statsContent');
+            
+            if (totalMatches > 0) {
+                statsDiv.style.display = 'block';
+                const completionRate = Math.round((completedMatches / totalMatches) * 100);
+                
+                // Statistiques par tour
+                let tourStats = '';
+                for (let tour = 1; tour <= 4; tour++) {
+                    let tourTotal = 0;
+                    let tourCompleted = 0;
+                    
+                    for (let division = 1; division <= 3; division++) {
+                        const tourMatches = matches[division].filter(m => m.tour === tour);
+                        tourTotal += tourMatches.length;
+                        tourCompleted += tourMatches.filter(m => m.completed).length;
+                    }
+                    
+                    if (tourTotal > 0) {
+                        const tourRate = Math.round((tourCompleted / tourTotal) * 100);
+                        tourStats += `
+                            <div class="stat-card">
+                                <div class="stat-number">${tourRate}%</div>
+                                <div>Tour ${tour} (${tourCompleted}/${tourTotal})</div>
+                            </div>
+                        `;
+                    }
+                }
+                
+                statsContent.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${totalPlayers}</div>
+                        <div>Joueurs inscrits</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${totalMatches}</div>
+                        <div>Matchs générés</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${completedMatches}</div>
+                        <div>Matchs terminés</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${completionRate}%</div>
+                        <div>Progression globale</div>
+                    </div>
+                    ${tourStats}
+                `;
+            } else {
+                statsDiv.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
+                                playerMatchCount[player2]++;
