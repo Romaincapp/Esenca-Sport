@@ -1012,14 +1012,14 @@
                                 let setClass = 'set';
                                 let setDisabled = '';
                                 
-                                // Si le match est terminé et qu'on a un gagnant avec 2 sets
-                                if (match.completed) {
+                                // Vérifier si le match est déjà terminé et si ce set doit être désactivé
+                                if (match.completed && setIndex === 2) {
+                                    // Si le match est terminé en 2 sets, désactiver le set 3
                                     let player1Sets = 0;
                                     let player2Sets = 0;
                                     
-                                    // Compter les sets gagnés jusqu'à ce set
-                                    for (let i = 0; i <= setIndex; i++) {
-                                        if (match.sets[i].player1Score !== '' && match.sets[i].player2Score !== '') {
+                                    for (let i = 0; i < 2; i++) { // Vérifier seulement les 2 premiers sets
+                                        if (match.sets[i] && match.sets[i].player1Score !== '' && match.sets[i].player2Score !== '') {
                                             const score1 = parseInt(match.sets[i].player1Score);
                                             const score2 = parseInt(match.sets[i].player2Score);
                                             
@@ -1031,30 +1031,10 @@
                                         }
                                     }
                                     
-                                    // Si le match était déjà fini avant ce set, griser le set
-                                    if (setIndex > 1 && (player1Sets >= 2 || player2Sets >= 2)) {
-                                        let setsBeforeThis = 0;
-                                        let p1SetsBeforeThis = 0;
-                                        let p2SetsBeforeThis = 0;
-                                        
-                                        for (let i = 0; i < setIndex; i++) {
-                                            if (match.sets[i].player1Score !== '' && match.sets[i].player2Score !== '') {
-                                                setsBeforeThis++;
-                                                const score1 = parseInt(match.sets[i].player1Score);
-                                                const score2 = parseInt(match.sets[i].player2Score);
-                                                
-                                                if (score1 > score2) {
-                                                    p1SetsBeforeThis++;
-                                                } else if (score2 > score1) {
-                                                    p2SetsBeforeThis++;
-                                                }
-                                            }
-                                        }
-                                        
-                                        if (p1SetsBeforeThis >= 2 || p2SetsBeforeThis >= 2) {
-                                            setClass += ' set-disabled';
-                                            setDisabled = 'disabled';
-                                        }
+                                    // Si quelqu'un a déjà 2 sets, désactiver le set 3
+                                    if (player1Sets >= 2 || player2Sets >= 2) {
+                                        setClass += ' set-disabled';
+                                        setDisabled = 'disabled';
                                     }
                                 }
                                 
@@ -1064,13 +1044,13 @@
                                         <div class="set-scores">
                                             <input type="number" class="score-input" 
                                                    placeholder="0" min="0" max="30"
-                                                   value="${match.sets[setIndex].player1Score}" 
+                                                   value="${match.sets[setIndex].player1Score || ''}" 
                                                    ${setDisabled}
                                                    onchange="updateSetScore(${division}, ${globalIndex}, ${setIndex}, 'player1Score', this.value)">
                                             <span class="score-separator">-</span>
                                             <input type="number" class="score-input" 
                                                    placeholder="0" min="0" max="30"
-                                                   value="${match.sets[setIndex].player2Score}"
+                                                   value="${match.sets[setIndex].player2Score || ''}"
                                                    ${setDisabled}
                                                    onchange="updateSetScore(${division}, ${globalIndex}, ${setIndex}, 'player2Score', this.value)">
                                         </div>
