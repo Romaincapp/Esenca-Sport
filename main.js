@@ -99,12 +99,13 @@ function parseTitle(summary) {
   return { sport: sport || "Autre", place, title: rest || raw };
 }
 
-// Extrait le lien d'inscription d'un événement (par ordre de préférence).
+// Extrait le lien d'inscription d'un événement.
+// Priorité : lien collé dans la description → champ source → lien Google Agenda.
 function extractLink(item) {
-  if (item.source && item.source.url) return item.source.url;
   const desc = item.description || "";
   const m = desc.match(/https?:\/\/[^\s"'<>]+/);
   if (m) return m[0];
+  if (item.source && item.source.url) return item.source.url;
   if (item.htmlLink) return item.htmlLink;
   return "";
 }
