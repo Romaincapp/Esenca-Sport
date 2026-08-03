@@ -20,19 +20,17 @@
   </header>
 
   <main class="wrap">
-    <div class="member-notice">
-      <p class="member-notice-text">
-        <strong>Activités réservées aux membres de la fédération Sportéa.</strong>
-        <span>Pour participer et vous inscrire aux activités, vous devez être membre.</span>
-      </p>
-      <a class="btn-membre" href="https://sportea.be/" target="_blank" rel="noopener">Devenir membre</a>
-    </div>
-
     <section class="filters" aria-label="Filtres">
       <div class="filter">
         <label for="filter-sport">Sport</label>
         <select id="filter-sport">
           <option value="">Tous les sports</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-place">Lieu</label>
+        <select id="filter-place">
+          <option value="">Tous les lieux</option>
         </select>
       </div>
       <div class="filter">
@@ -79,8 +77,11 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>Activités réservées aux membres de la fédération
-        <a href="https://sportea.be/" target="_blank" rel="noopener">Sportéa</a>.</p>
+      <p class="footer-membre">
+        Activités réservées aux membres de la fédération
+        <a href="https://sportea.be/" target="_blank" rel="noopener">Sportéa</a>.
+        <a class="footer-cta" href="https://sportea.be/" target="_blank" rel="noopener">Devenir membre</a>
+      </p>
       <p>Calendrier synchronisé avec Google Agenda · Esenca Sport</p>
     </div>
   </footer>

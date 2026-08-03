@@ -173,6 +173,7 @@ function monthLabel(d) {
 
 const eventsEl = document.getElementById("events");
 const sportSelect = document.getElementById("filter-sport");
+const placeSelect = document.getElementById("filter-place");
 const monthSelect = document.getElementById("filter-month");
 const resetBtn = document.getElementById("reset-filters");
 const resultCount = document.getElementById("result-count");
@@ -188,6 +189,16 @@ function populateFilters() {
     sportSelect.appendChild(opt);
   }
 
+  const places = [...new Set(allEvents.map((e) => e.place).filter(Boolean))].sort(
+    (a, b) => a.localeCompare(b, "fr")
+  );
+  for (const p of places) {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.textContent = p;
+    placeSelect.appendChild(opt);
+  }
+
   const months = new Map();
   for (const e of allEvents) months.set(monthKey(e.start), e.start);
   const sortedKeys = [...months.keys()].sort();
@@ -201,9 +212,11 @@ function populateFilters() {
 
 function getFiltered() {
   const sport = sportSelect.value;
+  const place = placeSelect.value;
   const month = monthSelect.value;
   return allEvents.filter((e) => {
     if (sport && e.sport !== sport) return false;
+    if (place && e.place !== place) return false;
     if (month && monthKey(e.start) !== month) return false;
     return true;
   });
@@ -351,9 +364,11 @@ function showError(message) {
 }
 
 sportSelect.addEventListener("change", renderEvents);
+placeSelect.addEventListener("change", renderEvents);
 monthSelect.addEventListener("change", renderEvents);
 resetBtn.addEventListener("click", () => {
   sportSelect.value = "";
+  placeSelect.value = "";
   monthSelect.value = "";
   renderEvents();
 });
