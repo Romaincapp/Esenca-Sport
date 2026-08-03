@@ -1,16 +1,17 @@
 :root {
-  --brand: #0b7a4b;
-  --brand-dark: #075c38;
-  --brand-light: #e8f5ee;
-  --accent: #f0a500;
-  --ink: #1f2a24;
-  --muted: #6b7a72;
-  --bg: #f5f7f6;
+  --brand: #009fe3;        /* bleu azur Esenca */
+  --brand-dark: #007cb8;
+  --brand-light: #e6f5fd;
+  --accent: #ea5b0c;       /* orange Esenca */
+  --accent-dark: #c94d0a;
+  --ink: #333333;
+  --muted: #6a7580;
+  --bg: #f4f8fb;
   --card: #ffffff;
-  --border: #e2e8e4;
+  --border: #e1e8ee;
   --radius: 14px;
-  --shadow: 0 6px 24px rgba(11, 122, 75, 0.08);
-  --shadow-hover: 0 10px 32px rgba(11, 122, 75, 0.16);
+  --shadow: 0 6px 24px rgba(0, 120, 180, 0.08);
+  --shadow-hover: 0 10px 32px rgba(0, 120, 180, 0.16);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -30,10 +31,36 @@ body {
 
 /* Header */
 .site-header {
-  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+  background: linear-gradient(120deg, var(--brand) 0%, #12b0f0 100%);
   color: #fff;
-  padding: 2.4rem 0 2.6rem;
+  padding: 2.6rem 0 3.8rem;
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
 }
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+}
+.btn-doc {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 10px;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-doc:hover { background: #fff; color: var(--brand-dark); }
+.btn-doc:active { transform: scale(0.98); }
+.btn-doc:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .site-header h1 {
   margin: 0;
   font-size: clamp(1.7rem, 4vw, 2.4rem);
@@ -47,6 +74,42 @@ body {
   font-size: 1.02rem;
 }
 
+/* Encart membres Sportéa */
+.member-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 1.2rem;
+  background: var(--brand-light);
+  border: 1px solid #cfe9f8;
+  border-left: 5px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.95rem 1.2rem;
+  margin-top: -1.6rem;
+  position: relative;
+  z-index: 2;
+  box-shadow: var(--shadow);
+}
+.member-notice-text { flex: 1 1 300px; font-size: 0.95rem; color: var(--ink); }
+.member-notice-text strong { color: var(--brand-dark); }
+.member-notice-text span { color: var(--muted); }
+.btn-membre {
+  flex: none;
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-membre:hover { background: var(--accent-dark); }
+.btn-membre:active { transform: scale(0.98); }
+.btn-membre:focus-visible { outline: 2px solid var(--accent-dark); outline-offset: 2px; }
+
 /* Filters */
 .filters {
   display: flex;
@@ -57,10 +120,10 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.1rem 1.2rem;
-  margin-top: -1.4rem;
+  margin-top: 1.1rem;
   box-shadow: var(--shadow);
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 .filter { display: flex; flex-direction: column; gap: 0.3rem; }
 .filter label {
@@ -301,6 +364,15 @@ body {
   color: var(--muted);
   pointer-events: none;
 }
+.ov-member {
+  margin: 0.85rem 0 0;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.ov-member a { color: var(--accent); font-weight: 700; text-decoration: none; }
+.ov-member a:hover { text-decoration: underline; }
 
 @keyframes fade { from { opacity: 0; } }
 @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
@@ -314,6 +386,9 @@ body {
   font-size: 0.86rem;
   text-align: center;
 }
+.site-footer p { margin: 0.25rem 0; }
+.site-footer a { color: var(--brand-dark); font-weight: 600; text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
 
 @media (max-width: 560px) {
   .filters { flex-direction: column; align-items: stretch; }
