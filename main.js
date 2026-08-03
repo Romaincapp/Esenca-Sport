@@ -15,7 +15,7 @@ const CALENDAR_ID = "17m8o2c4mvte6m5f2t4s9n8eis@group.calendar.google.com";
 //    → Restriction par référent HTTP (ton/tes domaines)
 //    → Restriction d'API : "Google Calendar API" uniquement
 //    Ainsi une clé copiée ailleurs est rejetée par Google.
-const API_KEY = "REMPLACE_PAR_TA_CLE_API";
+const API_KEY = "AIzaSyAdwBFkY8i1D9FqgdeG9UTiMhG_x_MIdJI";
 
 // On récupère les événements à partir d'il y a 1 mois.
 const TIME_MIN = (() => {
