@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendrier Esenca Sport</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Calendrier <span>Esenca Sport</span></h1>
+      <p class="subtitle">Retrouvez tous les rendez-vous handisport et adaptés</p>
+    </div>
+  </header>
 
+  <main class="wrap">
+    <section class="filters" aria-label="Filtres">
+      <div class="filter">
+        <label for="filter-sport">Sport</label>
+        <select id="filter-sport">
+          <option value="">Tous les sports</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-month">Mois</label>
+        <select id="filter-month">
+          <option value="">Tous les mois</option>
+        </select>
+      </div>
+      <button id="reset-filters" type="button" class="btn-reset">Réinitialiser</button>
+      <p id="result-count" class="result-count" aria-live="polite"></p>
+    </section>
+
+    <section id="events" class="events" aria-live="polite">
+      <div class="state" id="state-loading">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Chargement des événements…</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Overlay détails -->
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay-backdrop" data-close></div>
+    <div class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="ov-title">
+      <button class="overlay-close" type="button" data-close aria-label="Fermer">&times;</button>
+      <span class="ov-sport" id="ov-sport"></span>
+      <h2 id="ov-title"></h2>
+      <ul class="ov-meta">
+        <li id="ov-date-row"><span class="ic">📅</span><span id="ov-date"></span></li>
+        <li id="ov-time-row"><span class="ic">🕐</span><span id="ov-time"></span></li>
+        <li id="ov-place-row"><span class="ic">📍</span><span id="ov-place"></span></li>
+      </ul>
+      <div class="ov-desc" id="ov-desc"></div>
+      <a class="btn-inscription" id="ov-link" href="#" target="_blank" rel="noopener">
+        S'inscrire à l'événement
+      </a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Calendrier synchronisé avec Google Agenda · Esenca Sport</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
