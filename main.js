@@ -1,29 +1,28 @@
 /* ============================================================
    Calendrier Esenca Sport
-   Affiche les événements d'un Google Agenda public (fichier iCal),
-   avec filtres par sport / par mois et overlay de détails.
+   Affiche les événements d'un Google Agenda public via l'API
+   Google Calendar v3 (fetch direct, sans proxy).
+   Filtres par sport / par mois + overlay de détails.
    ============================================================ */
 
 // ---- Configuration ---------------------------------------------------------
 
-// URL iCal publique du Google Agenda.
-const ICAL_URL =
-  "https://calendar.google.com/calendar/ical/17m8o2c4mvte6m5f2t4s9n8eis%40group.calendar.google.com/public/basic.ics";
+// Identifiant du Google Agenda public.
+const CALENDAR_ID = "17m8o2c4mvte6m5f2t4s9n8eis@group.calendar.google.com";
 
-// Le fichier iCal de Google ne renvoie pas d'en-têtes CORS : une page statique
-// ne peut donc pas le charger directement. On passe par un proxy CORS, avec
-// plusieurs solutions de repli en cas d'indisponibilité de l'une d'elles.
-const CORS_PROXIES = [
-  (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  (url) => `https://thingproxy.freeboard.io/fetch/${url}`,
-];
+// Clé API Google (API "Google Calendar API").
+// ⚠️ Dans une page statique la clé est visible : sécurise-la dans Google Cloud
+//    → Restriction par référent HTTP (ton/tes domaines)
+//    → Restriction d'API : "Google Calendar API" uniquement
+//    Ainsi une clé copiée ailleurs est rejetée par Google.
+const API_KEY = "REMPLACE_PAR_TA_CLE_API";
 
-// Fenêtre d'expansion des événements récurrents (bornée pour éviter les boucles).
-const EXPAND_FROM = new Date();
-EXPAND_FROM.setMonth(EXPAND_FROM.getMonth() - 1);
-const EXPAND_TO = new Date();
-EXPAND_TO.setFullYear(EXPAND_TO.getFullYear() + 2);
+// On récupère les événements à partir d'il y a 1 mois.
+const TIME_MIN = (() => {
+  const d = new Date();
+  d.setMonth(d.getMonth() - 1);
+  return d.toISOString();
+})();
 
 const MONTHS_FR = [
   "janvier", "février", "mars", "avril", "mai", "juin",
@@ -42,196 +41,48 @@ const DAYS_FR = [
 
 let allEvents = [];
 
-// ---- Récupération ----------------------------------------------------------
+// ---- Récupération (API Calendar v3) ---------------------------------------
 
-async function fetchICal() {
-  let lastError;
-  for (const proxy of CORS_PROXIES) {
-    try {
-      const res = await fetch(proxy(ICAL_URL), { redirect: "follow" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
-      if (text.includes("BEGIN:VCALENDAR")) return text;
-      throw new Error("Réponse invalide (pas de calendrier)");
-    } catch (err) {
-      lastError = err;
+// L'endpoint JSON de l'API v3 renvoie les en-têtes CORS : un fetch direct
+// fonctionne, sans proxy. singleEvents=true déplie les événements récurrents.
+async function fetchEvents() {
+  const base =
+    `https://www.googleapis.com/calendar/v3/calendars/` +
+    `${encodeURIComponent(CALENDAR_ID)}/events`;
+
+  const items = [];
+  let pageToken = "";
+
+  do {
+    const params = new URLSearchParams({
+      key: API_KEY,
+      singleEvents: "true",
+      orderBy: "startTime",
+      timeMin: TIME_MIN,
+      maxResults: "2500",
+    });
+    if (pageToken) params.set("pageToken", pageToken);
+
+    const res = await fetch(`${base}?${params.toString()}`);
+    if (!res.ok) {
+      let detail = `HTTP ${res.status}`;
+      try {
+        const j = await res.json();
+        if (j.error && j.error.message) detail = j.error.message;
+      } catch (_) {}
+      throw new Error(detail);
     }
-  }
-  throw lastError || new Error("Impossible de récupérer le calendrier");
-}
+    const data = await res.json();
+    if (Array.isArray(data.items)) items.push(...data.items);
+    pageToken = data.nextPageToken || "";
+  } while (pageToken);
 
-// ---- Analyse iCal ----------------------------------------------------------
-
-// Déplie les lignes repliées (une ligne de continuation commence par un espace
-// ou une tabulation).
-function unfoldLines(raw) {
-  const lines = raw.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
-  const out = [];
-  for (const line of lines) {
-    if ((line.startsWith(" ") || line.startsWith("\t")) && out.length) {
-      out[out.length - 1] += line.slice(1);
-    } else {
-      out.push(line);
-    }
-  }
-  return out;
-}
-
-// Sépare "NAME;PARAM=x:value" en { name, params, value }.
-function parseLine(line) {
-  const colon = line.indexOf(":");
-  if (colon === -1) return null;
-  const left = line.slice(0, colon);
-  const value = line.slice(colon + 1);
-  const parts = left.split(";");
-  const name = parts.shift().toUpperCase();
-  const params = {};
-  for (const p of parts) {
-    const eq = p.indexOf("=");
-    if (eq > -1) params[p.slice(0, eq).toUpperCase()] = p.slice(eq + 1);
-  }
-  return { name, params, value };
-}
-
-// Décode les échappements texte iCal (\n, \, , \; , \\).
-function unescapeText(v) {
-  return (v || "")
-    .replace(/\\n/gi, "\n")
-    .replace(/\\,/g, ",")
-    .replace(/\\;/g, ";")
-    .replace(/\\\\/g, "\\");
-}
-
-// Convertit une valeur de date iCal en objet { date, allDay }.
-// Gère VALUE=DATE (journée entière), les heures UTC (suffixe Z) et les heures
-// locales / avec TZID (interprétées comme heure "murale" à afficher telle quelle).
-function parseICalDate(value, params) {
-  const isDate = params.VALUE === "DATE" || /^\d{8}$/.test(value);
-  const m = value.match(
-    /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2}))?(Z)?$/
-  );
-  if (!m) return { date: null, allDay: false };
-  const [, y, mo, d, hh, mm, ss, z] = m;
-  if (isDate || hh === undefined) {
-    return { date: new Date(+y, +mo - 1, +d), allDay: true };
-  }
-  if (z) {
-    // Heure UTC → convertie vers l'heure locale du visiteur.
-    return {
-      date: new Date(Date.UTC(+y, +mo - 1, +d, +hh, +mm, +ss || 0)),
-      allDay: false,
-    };
-  }
-  // Heure locale / TZID : on affiche l'heure telle qu'écrite dans l'agenda.
-  return { date: new Date(+y, +mo - 1, +d, +hh, +mm, +ss || 0), allDay: false };
-}
-
-// Extrait les blocs VEVENT bruts.
-function parseVEvents(raw) {
-  const lines = unfoldLines(raw);
-  const events = [];
-  let cur = null;
-  for (const line of lines) {
-    if (line === "BEGIN:VEVENT") {
-      cur = { EXDATE: [] };
-      continue;
-    }
-    if (line === "END:VEVENT") {
-      if (cur) events.push(cur);
-      cur = null;
-      continue;
-    }
-    if (!cur) continue;
-    const parsed = parseLine(line);
-    if (!parsed) continue;
-    const { name, params, value } = parsed;
-    if (name === "EXDATE") {
-      cur.EXDATE.push(parseICalDate(value.split(",")[0], params).date);
-    } else {
-      cur[name] = { value, params };
-    }
-  }
-  return events;
-}
-
-// ---- Récurrences (RRULE) ---------------------------------------------------
-
-const BYDAY_MAP = { SU: 0, MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6 };
-
-function parseRRule(str) {
-  const rule = {};
-  for (const part of str.split(";")) {
-    const [k, v] = part.split("=");
-    rule[k.toUpperCase()] = v;
-  }
-  return rule;
-}
-
-// Étend un événement récurrent en une liste de dates de début, dans la fenêtre.
-function expandRecurrence(rule, start) {
-  const freq = rule.FREQ;
-  const interval = parseInt(rule.INTERVAL || "1", 10) || 1;
-  const count = rule.COUNT ? parseInt(rule.COUNT, 10) : null;
-  let until = null;
-  if (rule.UNTIL) until = parseICalDate(rule.UNTIL, {}).date;
-  const byDays = rule.BYDAY
-    ? rule.BYDAY.split(",").map((d) => BYDAY_MAP[d.slice(-2)]).filter((n) => n !== undefined)
-    : null;
-
-  const results = [];
-  const limit = 800; // garde-fou
-  let occurrences = 0;
-
-  const pushIfInWindow = (d) => {
-    if (until && d > until) return false;
-    if (count && occurrences >= count) return false;
-    occurrences++;
-    if (d >= EXPAND_FROM && d <= EXPAND_TO) results.push(new Date(d));
-    return true;
-  };
-
-  if (freq === "WEEKLY" && byDays && byDays.length) {
-    // Point de départ : début de la semaine contenant `start`.
-    const weekStart = new Date(start);
-    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-    let week = new Date(weekStart);
-    let iterations = 0;
-    while (iterations < limit && week <= EXPAND_TO) {
-      for (const dow of byDays.slice().sort((a, b) => a - b)) {
-        const occ = new Date(week);
-        occ.setDate(week.getDate() + dow);
-        occ.setHours(start.getHours(), start.getMinutes(), start.getSeconds(), 0);
-        if (occ < start) continue;
-        if (!pushIfInWindow(occ)) return results;
-      }
-      week.setDate(week.getDate() + 7 * interval);
-      iterations++;
-    }
-    return results;
-  }
-
-  // FREQ = DAILY / WEEKLY (sans BYDAY) / MONTHLY / YEARLY
-  let occ = new Date(start);
-  let iterations = 0;
-  while (iterations < limit && occ <= EXPAND_TO) {
-    if (!pushIfInWindow(occ)) break;
-    const next = new Date(occ);
-    switch (freq) {
-      case "DAILY": next.setDate(next.getDate() + interval); break;
-      case "WEEKLY": next.setDate(next.getDate() + 7 * interval); break;
-      case "MONTHLY": next.setMonth(next.getMonth() + interval); break;
-      case "YEARLY": next.setFullYear(next.getFullYear() + interval); break;
-      default: return results; // FREQ inconnu → occurrence unique déjà ajoutée
-    }
-    occ = next;
-    iterations++;
-  }
-  return results;
+  return items;
 }
 
 // ---- Construction du modèle ------------------------------------------------
 
-// Décompose "E.S. | Foot - Philippeville" → { sport: "Foot", place: "Philippeville" }.
+// Décompose "E.S. | Foot - Philippeville" → { sport, place, title }.
 function parseTitle(summary) {
   const raw = (summary || "").trim();
   let rest = raw;
@@ -248,55 +99,52 @@ function parseTitle(summary) {
   return { sport: sport || "Autre", place, title: rest || raw };
 }
 
-function buildEvents(raw) {
-  const vevents = parseVEvents(raw);
+// Extrait le lien d'inscription d'un événement (par ordre de préférence).
+function extractLink(item) {
+  if (item.source && item.source.url) return item.source.url;
+  const desc = item.description || "";
+  const m = desc.match(/https?:\/\/[^\s"'<>]+/);
+  if (m) return m[0];
+  if (item.htmlLink) return item.htmlLink;
+  return "";
+}
+
+function buildEvents(items) {
   const events = [];
 
-  for (const ve of vevents) {
-    if (!ve.DTSTART) continue;
-    const summary = ve.SUMMARY ? unescapeText(ve.SUMMARY.value) : "(Sans titre)";
-    const { sport, place, title } = parseTitle(summary);
-    const description = ve.DESCRIPTION ? unescapeText(ve.DESCRIPTION.value) : "";
-    const location = ve.LOCATION ? unescapeText(ve.LOCATION.value) : "";
-    const url = ve.URL ? ve.URL.value.trim() : "";
+  for (const item of items) {
+    if (item.status === "cancelled") continue;
+    if (!item.start) continue;
 
-    const startInfo = parseICalDate(ve.DTSTART.value, ve.DTSTART.params);
-    if (!startInfo.date) continue;
+    const allDay = !!item.start.date;
+    const start = allDay
+      ? new Date(item.start.date + "T00:00:00")
+      : new Date(item.start.dateTime);
+    if (isNaN(start)) continue;
 
-    // Durée (pour reporter l'heure de fin sur chaque occurrence).
-    let durationMs = 0;
-    if (ve.DTEND) {
-      const endInfo = parseICalDate(ve.DTEND.value, ve.DTEND.params);
-      if (endInfo.date) durationMs = endInfo.date - startInfo.date;
+    let end = null;
+    if (item.end) {
+      end = allDay
+        ? (item.end.date ? new Date(item.end.date + "T00:00:00") : null)
+        : new Date(item.end.dateTime);
+      if (end && isNaN(end)) end = null;
     }
 
-    const exdates = (ve.EXDATE || [])
-      .filter(Boolean)
-      .map((d) => d.getTime());
+    const summary = item.summary || "(Sans titre)";
+    const { sport, place, title } = parseTitle(summary);
 
-    const makeEvent = (start) => ({
+    events.push({
       sport,
-      place: place || location,
-      location,
+      place: place || item.location || "",
+      location: item.location || "",
       title,
       summary,
-      description,
-      url,
+      description: item.description || "",
+      url: extractLink(item),
       start,
-      end: durationMs ? new Date(start.getTime() + durationMs) : null,
-      allDay: startInfo.allDay,
+      end,
+      allDay,
     });
-
-    if (ve.RRULE) {
-      const rule = parseRRule(ve.RRULE.value);
-      const occurrences = expandRecurrence(rule, startInfo.date);
-      for (const occ of occurrences) {
-        if (exdates.includes(occ.getTime())) continue;
-        events.push(makeEvent(occ));
-      }
-    } else {
-      events.push(makeEvent(startInfo.date));
-    }
   }
 
   events.sort((a, b) => a.start - b.start);
@@ -510,9 +358,13 @@ resetBtn.addEventListener("click", () => {
 });
 
 async function init() {
+  if (!API_KEY || API_KEY === "REMPLACE_PAR_TA_CLE_API") {
+    showError("Clé API manquante : renseigne API_KEY dans main.js.");
+    return;
+  }
   try {
-    const raw = await fetchICal();
-    allEvents = buildEvents(raw);
+    const items = await fetchEvents();
+    allEvents = buildEvents(items);
     if (allEvents.length === 0) {
       showError("Aucun événement trouvé dans l'agenda.");
       return;
@@ -521,9 +373,7 @@ async function init() {
     renderEvents();
   } catch (err) {
     console.error(err);
-    showError(
-      "Vérifiez votre connexion. Le calendrier est chargé via un proxy public qui peut être temporairement indisponible."
-    );
+    showError(err.message || "Erreur inattendue.");
   }
 }
 
