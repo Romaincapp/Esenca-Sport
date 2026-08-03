@@ -196,6 +196,13 @@ body {
   color: var(--brand-dark);
   font-weight: 700;
 }
+.card-date--range { align-items: center; }
+.card-date--range .range {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--brand-dark);
+  line-height: 1.25;
+}
 .card-date .day { font-size: 1.7rem; line-height: 1; }
 .card-date .mon { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; }
 .card-date .dow { font-size: 0.8rem; color: var(--muted); font-weight: 600; }

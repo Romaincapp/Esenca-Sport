@@ -170,6 +170,43 @@ function monthLabel(d) {
   return `${MONTHS_FR[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+function sameDay(a, b) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+// Dernier jour réel de l'événement. Pour les journées entières, Google renvoie
+// une date de fin exclusive (fin = lendemain du dernier jour) : on retranche 1 jour.
+function lastDay(ev) {
+  if (!ev.end) return ev.start;
+  if (ev.allDay) {
+    const d = new Date(ev.end);
+    d.setDate(d.getDate() - 1);
+    return d;
+  }
+  return ev.end;
+}
+function isMultiDay(ev) {
+  return !sameDay(ev.start, lastDay(ev));
+}
+// "Du 14 au 17 août" / "Du 30 août au 2 sept." / "Du 30 déc. 2026 au 2 janv. 2027".
+// `long` utilise les mois complets + l'année (pour l'overlay).
+function formatRange(a, b, long) {
+  const MO = long ? MONTHS_FR : MONTHS_FR_SHORT;
+  const sameYear = a.getFullYear() === b.getFullYear();
+  const sameMonth = sameYear && a.getMonth() === b.getMonth();
+  const year = long ? ` ${b.getFullYear()}` : "";
+  if (sameMonth) {
+    return `Du ${a.getDate()} au ${b.getDate()} ${MO[b.getMonth()]}${year}`;
+  }
+  if (sameYear) {
+    return `Du ${a.getDate()} ${MO[a.getMonth()]} au ${b.getDate()} ${MO[b.getMonth()]}${year}`;
+  }
+  return `Du ${a.getDate()} ${MO[a.getMonth()]} ${a.getFullYear()} au ${b.getDate()} ${MO[b.getMonth()]} ${b.getFullYear()}`;
+}
+
 // ---- Rendu ----------------------------------------------------------------
 
 const eventsEl = document.getElementById("events");
@@ -309,28 +346,41 @@ function renderEvents() {
     card.type = "button";
     card.className = "event-card" + (isPast(ev) ? " past" : "");
 
+    const multi = isMultiDay(ev);
     const dow = ev.allDay ? "" : DAYS_FR[ev.start.getDay()];
-    const timeLine = ev.allDay
-      ? "Journée entière"
-      : `${formatTime(ev.start)}${ev.end ? " – " + formatTime(ev.end) : ""}`;
     const place = ev.place || "";
 
+    // Ligne d'horaire : masquée pour les journées entières sur plusieurs jours.
+    let timeLine;
+    if (ev.allDay) {
+      timeLine = multi ? "" : "Journée entière";
+    } else {
+      timeLine = `${formatTime(ev.start)}${ev.end ? " – " + formatTime(ev.end) : ""}`;
+    }
+
+    const dateBlock = multi
+      ? `<div class="card-date card-date--range"><span class="range"></span></div>`
+      : `<div class="card-date">
+           <span class="day">${ev.start.getDate()}</span>
+           <span class="mon">${MONTHS_FR_SHORT[ev.start.getMonth()]}</span>
+           <span class="dow">${dow}</span>
+         </div>`;
+
     card.innerHTML = `
-      <div class="card-date">
-        <span class="day">${ev.start.getDate()}</span>
-        <span class="mon">${MONTHS_FR_SHORT[ev.start.getMonth()]}</span>
-        <span class="dow">${dow}</span>
-      </div>
+      ${dateBlock}
       <span class="card-sport"></span>
       <h3 class="card-title"></h3>
       <div class="card-info">
-        <span class="js-time"></span>
+        ${timeLine ? '<span class="js-time"></span>' : ""}
         ${place ? '<span class="js-place"></span>' : ""}
       </div>
     `;
+    if (multi) {
+      card.querySelector(".range").textContent = formatRange(ev.start, lastDay(ev), false);
+    }
     card.querySelector(".card-sport").textContent = ev.sport;
     card.querySelector(".card-title").textContent = ev.title;
-    card.querySelector(".js-time").textContent = "🕐 " + timeLine;
+    if (timeLine) card.querySelector(".js-time").textContent = "🕐 " + timeLine;
     if (place) card.querySelector(".js-place").textContent = "📍 " + place;
 
     card.addEventListener("click", () => openOverlay(ev));
@@ -366,7 +416,9 @@ function descToHtml(text) {
 function openOverlay(ev) {
   ovSport.textContent = ev.sport;
   ovTitle.textContent = ev.title;
-  ovDate.textContent = formatDateLong(ev.start);
+  ovDate.textContent = isMultiDay(ev)
+    ? formatRange(ev.start, lastDay(ev), true)
+    : formatDateLong(ev.start);
 
   if (ev.allDay) {
     ovTimeRow.style.display = "none";
