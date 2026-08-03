@@ -17,10 +17,11 @@ const CALENDAR_ID = "17m8o2c4mvte6m5f2t4s9n8eis@group.calendar.google.com";
 //    Ainsi une clé copiée ailleurs est rejetée par Google.
 const API_KEY = "AIzaSyAdwBFkY8i1D9FqgdeG9UTiMhG_x_MIdJI";
 
-// On récupère les événements à partir d'il y a 1 mois.
+// On récupère un large historique (24 mois) pour pouvoir afficher les
+// événements passés à la demande. Par défaut ils restent masqués (voir baseEvents).
 const TIME_MIN = (() => {
   const d = new Date();
-  d.setMonth(d.getMonth() - 1);
+  d.setMonth(d.getMonth() - 24);
   return d.toISOString();
 })();
 
@@ -175,6 +176,23 @@ const eventsEl = document.getElementById("events");
 const sportSelect = document.getElementById("filter-sport");
 const placeSelect = document.getElementById("filter-place");
 const monthSelect = document.getElementById("filter-month");
+const pastCheckbox = document.getElementById("filter-past");
+
+// Un événement est « passé » si son jour est antérieur à aujourd'hui.
+function startOfToday() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+function isPast(e) {
+  const ref = e.end || e.start;
+  return ref < startOfToday();
+}
+// Jeu d'événements de base : futur uniquement par défaut, tout si la case
+// « événements passés » est cochée. Filtres et affichage s'appuient dessus.
+function baseEvents() {
+  return pastCheckbox.checked ? allEvents : allEvents.filter((e) => !isPast(e));
+}
 const resetBtn = document.getElementById("reset-filters");
 const resultCount = document.getElementById("result-count");
 
@@ -184,7 +202,7 @@ function eventsMatching(exclude) {
   const sport = sportSelect.value;
   const place = placeSelect.value;
   const month = monthSelect.value;
-  return allEvents.filter((e) => {
+  return baseEvents().filter((e) => {
     if (exclude !== "sport" && sport && e.sport !== sport) return false;
     if (exclude !== "place" && place && e.place !== place) return false;
     if (exclude !== "month" && month && monthKey(e.start) !== month) return false;
@@ -261,7 +279,7 @@ function getFiltered() {
   const sport = sportSelect.value;
   const place = placeSelect.value;
   const month = monthSelect.value;
-  return allEvents.filter((e) => {
+  return baseEvents().filter((e) => {
     if (sport && e.sport !== sport) return false;
     if (place && e.place !== place) return false;
     if (month && monthKey(e.start) !== month) return false;
@@ -289,7 +307,7 @@ function renderEvents() {
   for (const ev of list) {
     const card = document.createElement("button");
     card.type = "button";
-    card.className = "event-card";
+    card.className = "event-card" + (isPast(ev) ? " past" : "");
 
     const dow = ev.allDay ? "" : DAYS_FR[ev.start.getDay()];
     const timeLine = ev.allDay
@@ -418,6 +436,7 @@ function handleFilterChange(changed) {
 sportSelect.addEventListener("change", () => handleFilterChange("sport"));
 placeSelect.addEventListener("change", () => handleFilterChange("place"));
 monthSelect.addEventListener("change", () => handleFilterChange("month"));
+pastCheckbox.addEventListener("change", () => handleFilterChange(null));
 resetBtn.addEventListener("click", () => {
   sportSelect.value = "";
   placeSelect.value = "";

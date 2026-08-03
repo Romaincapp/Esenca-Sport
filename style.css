@@ -125,6 +125,22 @@ body {
   transition: background 0.15s, color 0.15s;
 }
 .btn-reset:hover { background: var(--brand-light); color: var(--brand-dark); }
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+.filter-check input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--brand);
+  cursor: pointer;
+}
 .result-count {
   margin: 0 0 0 auto;
   align-self: center;
@@ -169,6 +185,10 @@ body {
   border-color: var(--brand);
   outline: none;
 }
+.event-card.past { opacity: 0.5; }
+.event-card.past::before { background: var(--muted); }
+.event-card.past:hover,
+.event-card.past:focus-visible { opacity: 0.9; }
 .card-date {
   display: flex;
   align-items: baseline;
