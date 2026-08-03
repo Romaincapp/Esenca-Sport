@@ -8,9 +8,14 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="wrap">
-      <h1>Calendrier <span>Esenca Sport</span></h1>
-      <p class="subtitle">Retrouvez tous les rendez-vous handisport et adaptés</p>
+    <div class="wrap header-inner">
+      <div class="header-titles">
+        <h1>Calendrier <span>Esenca Sport</span></h1>
+        <p class="subtitle">Retrouvez tous les rendez-vous handisport et adaptés</p>
+      </div>
+      <a class="btn-doc" href="https://drive.google.com/drive/folders/14aTsl0Kjz3U6VaRXcUiLQDSN6V8vmnkc?usp=sharing" target="_blank" rel="noopener">
+        <span aria-hidden="true">📄</span> Classement et règlement
+      </a>
     </div>
   </header>
 
@@ -20,6 +25,12 @@
         <label for="filter-sport">Sport</label>
         <select id="filter-sport">
           <option value="">Tous les sports</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-place">Lieu</label>
+        <select id="filter-place">
+          <option value="">Tous les lieux</option>
         </select>
       </div>
       <div class="filter">
@@ -56,11 +67,21 @@
       <a class="btn-inscription" id="ov-link" href="#" target="_blank" rel="noopener">
         S'inscrire à l'événement
       </a>
+      <p class="ov-member">
+        Activités réservées aux membres de la fédération
+        <a href="https://sportea.be/" target="_blank" rel="noopener">Sportéa</a>.
+        <a href="https://sportea.be/" target="_blank" rel="noopener">Devenir membre →</a>
+      </p>
     </div>
   </div>
 
   <footer class="site-footer">
     <div class="wrap">
+      <p class="footer-membre">
+        Activités réservées aux membres de la fédération
+        <a href="https://sportea.be/" target="_blank" rel="noopener">Sportéa</a>.
+        <a class="footer-cta" href="https://sportea.be/" target="_blank" rel="noopener">Devenir membre</a>
+      </p>
       <p>Calendrier synchronisé avec Google Agenda · Esenca Sport</p>
     </div>
   </footer>
