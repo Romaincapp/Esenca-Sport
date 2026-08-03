@@ -178,36 +178,83 @@ const monthSelect = document.getElementById("filter-month");
 const resetBtn = document.getElementById("reset-filters");
 const resultCount = document.getElementById("result-count");
 
-function populateFilters() {
-  const sports = [...new Set(allEvents.map((e) => e.sport))].sort((a, b) =>
-    a.localeCompare(b, "fr")
-  );
-  for (const s of sports) {
-    const opt = document.createElement("option");
-    opt.value = s;
-    opt.textContent = s;
-    sportSelect.appendChild(opt);
-  }
+// Événements correspondant aux filtres actifs, en ignorant celui de `exclude`.
+// Sert à calculer les valeurs disponibles pour chaque menu (filtres en cascade).
+function eventsMatching(exclude) {
+  const sport = sportSelect.value;
+  const place = placeSelect.value;
+  const month = monthSelect.value;
+  return allEvents.filter((e) => {
+    if (exclude !== "sport" && sport && e.sport !== sport) return false;
+    if (exclude !== "place" && place && e.place !== place) return false;
+    if (exclude !== "month" && month && monthKey(e.start) !== month) return false;
+    return true;
+  });
+}
 
-  const places = [...new Set(allEvents.map((e) => e.place).filter(Boolean))].sort(
-    (a, b) => a.localeCompare(b, "fr")
-  );
-  for (const p of places) {
-    const opt = document.createElement("option");
-    opt.value = p;
-    opt.textContent = p;
-    placeSelect.appendChild(opt);
+// Liste [valeur, libellé] des options disponibles pour un menu donné.
+function optionList(name) {
+  const evs = eventsMatching(name);
+  if (name === "sport") {
+    return [...new Set(evs.map((e) => e.sport))]
+      .sort((a, b) => a.localeCompare(b, "fr"))
+      .map((v) => [v, v]);
   }
-
+  if (name === "place") {
+    return [...new Set(evs.map((e) => e.place).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, "fr"))
+      .map((v) => [v, v]);
+  }
   const months = new Map();
-  for (const e of allEvents) months.set(monthKey(e.start), e.start);
-  const sortedKeys = [...months.keys()].sort();
-  for (const key of sortedKeys) {
+  for (const e of evs) months.set(monthKey(e.start), e.start);
+  return [...months.keys()].sort().map((k) => [k, monthLabel(months.get(k))]);
+}
+
+// Reconstruit un menu à partir de ses options, en conservant la valeur
+// sélectionnée si elle est encore disponible.
+function rebuildSelect(select, pairs, placeholder) {
+  const current = select.value;
+  select.innerHTML = "";
+  const ph = document.createElement("option");
+  ph.value = "";
+  ph.textContent = placeholder;
+  select.appendChild(ph);
+  let keep = false;
+  for (const [value, label] of pairs) {
     const opt = document.createElement("option");
-    opt.value = key;
-    opt.textContent = monthLabel(months.get(key));
-    monthSelect.appendChild(opt);
+    opt.value = value;
+    opt.textContent = label;
+    if (value === current) keep = true;
+    select.appendChild(opt);
   }
+  select.value = keep ? current : "";
+}
+
+// Remet à zéro les autres menus dont la valeur devient incompatible après un
+// changement (on ne touche jamais au menu que l'utilisateur vient de modifier).
+function pruneSelections(changed) {
+  let again = true;
+  while (again) {
+    again = false;
+    for (const [name, sel] of [
+      ["sport", sportSelect],
+      ["place", placeSelect],
+      ["month", monthSelect],
+    ]) {
+      if (name === changed || !sel.value) continue;
+      const available = new Set(optionList(name).map((p) => p[0]));
+      if (!available.has(sel.value)) {
+        sel.value = "";
+        again = true;
+      }
+    }
+  }
+}
+
+function refreshFilters() {
+  rebuildSelect(sportSelect, optionList("sport"), "Tous les sports");
+  rebuildSelect(placeSelect, optionList("place"), "Tous les lieux");
+  rebuildSelect(monthSelect, optionList("month"), "Tous les mois");
 }
 
 function getFiltered() {
@@ -363,13 +410,19 @@ function showError(message) {
   eventsEl.appendChild(el);
 }
 
-sportSelect.addEventListener("change", renderEvents);
-placeSelect.addEventListener("change", renderEvents);
-monthSelect.addEventListener("change", renderEvents);
+function handleFilterChange(changed) {
+  pruneSelections(changed);
+  refreshFilters();
+  renderEvents();
+}
+sportSelect.addEventListener("change", () => handleFilterChange("sport"));
+placeSelect.addEventListener("change", () => handleFilterChange("place"));
+monthSelect.addEventListener("change", () => handleFilterChange("month"));
 resetBtn.addEventListener("click", () => {
   sportSelect.value = "";
   placeSelect.value = "";
   monthSelect.value = "";
+  refreshFilters();
   renderEvents();
 });
 
@@ -385,7 +438,7 @@ async function init() {
       showError("Aucun événement trouvé dans l'agenda.");
       return;
     }
-    populateFilters();
+    refreshFilters();
     renderEvents();
   } catch (err) {
     console.error(err);
