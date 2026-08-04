@@ -366,47 +366,44 @@ function renderEvents() {
   }
 }
 
-// Construit une card d'événement.
+// Construit une card d'événement (compact horizontal : date | détails).
 function buildCard(ev) {
   const card = document.createElement("button");
   card.type = "button";
   card.className = "event-card" + (isPast(ev) ? " past" : "");
 
   const multi = isMultiDay(ev);
-  const dow = ev.allDay ? "" : DAYS_FR[ev.start.getDay()];
   const place = ev.place || "";
 
-  // Ligne d'horaire : masquée pour les journées entières sur plusieurs jours.
-  let timeLine;
-  if (ev.allDay) {
-    timeLine = multi ? "" : "Journée entière";
+  // Ligne date/heure de la méta.
+  let whenLine;
+  if (multi) {
+    whenLine = "📅 " + formatRange(ev.start, lastDay(ev), false);
+  } else if (ev.allDay) {
+    whenLine = "📅 Journée entière";
   } else {
-    timeLine = `${formatTime(ev.start)}${ev.end ? " – " + formatTime(ev.end) : ""}`;
+    whenLine =
+      "🕐 " + formatTime(ev.start) + (ev.end ? " – " + formatTime(ev.end) : "");
   }
-
-  const dateBlock = multi
-    ? `<div class="card-date card-date--range"><span class="range"></span></div>`
-    : `<div class="card-date">
-         <span class="day">${ev.start.getDate()}</span>
-         <span class="mon">${MONTHS_FR_SHORT[ev.start.getMonth()]}</span>
-         <span class="dow">${dow}</span>
-       </div>`;
 
   card.innerHTML = `
-    ${dateBlock}
-    <span class="card-sport"></span>
-    <h3 class="card-title"></h3>
-    <div class="card-info">
-      ${timeLine ? '<span class="js-time"></span>' : ""}
-      ${place ? '<span class="js-place"></span>' : ""}
+    <div class="card-date">
+      <span class="day">${ev.start.getDate()}</span>
+      <span class="mon">${MONTHS_FR_SHORT[ev.start.getMonth()]}</span>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-body">
+      <h3 class="card-title"></h3>
+      <div class="card-meta">
+        <span class="card-sport"></span>
+        <span class="js-when"></span>
+        ${place ? '<span class="js-place"></span>' : ""}
+      </div>
     </div>
   `;
-  if (multi) {
-    card.querySelector(".range").textContent = formatRange(ev.start, lastDay(ev), false);
-  }
-  card.querySelector(".card-sport").textContent = ev.sport;
   card.querySelector(".card-title").textContent = ev.title;
-  if (timeLine) card.querySelector(".js-time").textContent = "🕐 " + timeLine;
+  card.querySelector(".card-sport").textContent = ev.sport;
+  card.querySelector(".js-when").textContent = whenLine;
   if (place) card.querySelector(".js-place").textContent = "📍 " + place;
 
   card.addEventListener("click", () => openOverlay(ev));
