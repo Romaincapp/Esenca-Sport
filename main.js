@@ -337,6 +337,7 @@ function renderEvents() {
       : `${list.length} événement${list.length > 1 ? "s" : ""}`;
 
   updateFabCount();
+  updateSheetApply(list.length);
 
   if (list.length === 0) {
     const empty = document.createElement("div");
@@ -500,7 +501,16 @@ const filterFab = document.getElementById("filter-fab");
 const fabCount = document.getElementById("fab-count");
 const filterSheet = document.getElementById("filter-sheet");
 const sheetBody = document.getElementById("sheet-body");
+const sheetApply = document.getElementById("sheet-apply");
 let sheetPlaceholder = null;
+
+// Met à jour le libellé du bouton "Voir" avec le nombre de résultats.
+function updateSheetApply(count) {
+  sheetApply.textContent =
+    count === 0
+      ? "Aucun résultat"
+      : `Voir ${count} événement${count > 1 ? "s" : ""}`;
+}
 
 // Nombre de filtres actifs (pour la pastille du bouton flottant).
 function activeFilterCount() {
@@ -550,6 +560,7 @@ function closeSheet() {
 }
 
 filterFab.addEventListener("click", openSheet);
+sheetApply.addEventListener("click", closeSheet);
 filterSheet.addEventListener("click", (e) => {
   if (e.target.hasAttribute("data-close")) closeSheet();
 });

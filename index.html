@@ -58,8 +58,10 @@
 
   <!-- Bouton flottant "Filtrer" (apparaît après avoir scrollé) -->
   <button id="filter-fab" class="filter-fab" type="button" aria-expanded="false" hidden>
-    <span class="fab-ico" aria-hidden="true">⚙️</span>
-    <span>Filtrer</span>
+    <svg class="fab-ico" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+    </svg>
+    <span>Filtres</span>
     <span id="fab-count" class="fab-count" hidden></span>
   </button>
 
@@ -72,6 +74,7 @@
         <button class="sheet-close" type="button" data-close aria-label="Fermer">&times;</button>
       </div>
       <div id="sheet-body" class="sheet-body"></div>
+      <button id="sheet-apply" class="btn-apply" type="button">Voir les résultats</button>
     </div>
   </div>
 
