@@ -163,102 +163,86 @@ body {
 }
 .month-group:first-child .month-title { margin-top: 0; }
 
-.event-row {
-  position: relative;
-  display: flex;
-  align-items: center;
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.1rem;
-  width: 100%;
-  text-align: left;
+}
+.event-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 0.85rem 1.2rem 0.85rem 1.4rem;
+  padding: 1.1rem 1.15rem 1.2rem;
   box-shadow: var(--shadow);
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s;
+  position: relative;
   overflow: hidden;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s;
 }
-.event-row + .event-row { margin-top: 0.75rem; }
-.event-row::before {
+.event-card::before {
   content: "";
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 5px;
   background: var(--brand);
 }
-.event-row:hover,
-.event-row:focus-visible {
-  transform: translateY(-2px);
+.event-card:hover,
+.event-card:focus-visible {
+  transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
   border-color: var(--brand);
   outline: none;
 }
-.event-row.past { opacity: 0.5; }
-.event-row.past::before { background: var(--muted); }
-.event-row.past:hover,
-.event-row.past:focus-visible { opacity: 0.9; }
-
-.row-date {
-  flex: none;
-  width: 66px;
+.event-card.past { opacity: 0.5; }
+.event-card.past::before { background: var(--muted); }
+.event-card.past:hover,
+.event-card.past:focus-visible { opacity: 0.9; }
+.card-date {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-right: 1.1rem;
-  border-right: 1px solid var(--border);
+  align-items: baseline;
+  gap: 0.5rem;
   color: var(--brand-dark);
-}
-.row-date .dow,
-.row-date .mon {
-  font-size: 0.62rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
 }
-.row-date .day { font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
-
-.row-body {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+.card-date--range { align-items: center; }
+.card-date--range .range {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--brand-dark);
+  line-height: 1.25;
 }
-.row-title {
-  margin: 0;
-  font-size: 1.08rem;
-  font-weight: 700;
-  color: var(--ink);
-}
-.row-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.9rem;
-  font-size: 0.88rem;
-  color: var(--muted);
-}
-.row-meta > span { display: inline-flex; align-items: center; gap: 0.3rem; }
+.card-date .day { font-size: 1.7rem; line-height: 1; }
+.card-date .mon { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.card-date .dow { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
 .card-sport {
+  align-self: flex-start;
   background: var(--brand-light);
   color: var(--brand-dark);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   padding: 0.2rem 0.6rem;
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-
-@media (max-width: 520px) {
-  .event-row { gap: 0.9rem; padding-left: 1.1rem; }
-  .row-date { width: 52px; padding-right: 0.8rem; }
-  .row-date .day { font-size: 1.4rem; }
-  .row-title { font-size: 1rem; }
+.card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
 }
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.card-info span { display: flex; gap: 0.4rem; align-items: center; }
 
 /* States */
 .state {
