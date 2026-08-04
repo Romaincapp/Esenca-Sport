@@ -336,6 +336,8 @@ function renderEvents() {
       ? "Aucun événement"
       : `${list.length} événement${list.length > 1 ? "s" : ""}`;
 
+  updateFabCount();
+
   if (list.length === 0) {
     const empty = document.createElement("div");
     empty.className = "state";
@@ -489,6 +491,99 @@ overlay.addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !overlay.hidden) closeOverlay();
 });
+
+// ---- Filtres flottants (bouton + feuille au scroll) -----------------------
+
+const filtersEl = document.getElementById("filters");
+const filtersSentinel = document.getElementById("filters-sentinel");
+const filterFab = document.getElementById("filter-fab");
+const fabCount = document.getElementById("fab-count");
+const filterSheet = document.getElementById("filter-sheet");
+const sheetBody = document.getElementById("sheet-body");
+let sheetPlaceholder = null;
+
+// Nombre de filtres actifs (pour la pastille du bouton flottant).
+function activeFilterCount() {
+  let n = 0;
+  if (sportSelect.value) n++;
+  if (placeSelect.value) n++;
+  if (monthSelect.value) n++;
+  if (pastCheckbox.checked) n++;
+  return n;
+}
+function updateFabCount() {
+  const n = activeFilterCount();
+  if (n > 0) {
+    fabCount.textContent = String(n);
+    fabCount.hidden = false;
+  } else {
+    fabCount.hidden = true;
+  }
+}
+
+// Ouvre la feuille : on y déplace la vraie barre de filtres (source unique),
+// en laissant un espace de même hauteur pour éviter tout saut de mise en page.
+function openSheet() {
+  if (!filterSheet.hidden) return;
+  sheetPlaceholder = document.createElement("div");
+  sheetPlaceholder.style.height = filtersEl.offsetHeight + "px";
+  filtersEl.parentNode.insertBefore(sheetPlaceholder, filtersEl);
+  sheetBody.appendChild(filtersEl);
+  filtersEl.classList.add("in-sheet");
+  filterSheet.hidden = false;
+  filterFab.hidden = true;
+  filterFab.setAttribute("aria-expanded", "true");
+  document.body.style.overflow = "hidden";
+}
+function closeSheet() {
+  if (filterSheet.hidden) return;
+  filtersEl.classList.remove("in-sheet");
+  if (sheetPlaceholder) {
+    sheetPlaceholder.parentNode.insertBefore(filtersEl, sheetPlaceholder);
+    sheetPlaceholder.remove();
+    sheetPlaceholder = null;
+  }
+  filterSheet.hidden = true;
+  filterFab.setAttribute("aria-expanded", "false");
+  document.body.style.overflow = "";
+  updateFabVisibility();
+}
+
+filterFab.addEventListener("click", openSheet);
+filterSheet.addEventListener("click", (e) => {
+  if (e.target.hasAttribute("data-close")) closeSheet();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !filterSheet.hidden) closeSheet();
+});
+
+// Le bouton flottant s'affiche quand : la barre de filtres est dépassée,
+// le footer n'est pas visible, et la feuille est fermée.
+let filtersPassed = false;
+let footerVisible = false;
+function updateFabVisibility() {
+  filterFab.hidden = !(filtersPassed && !footerVisible && filterSheet.hidden);
+}
+
+new IntersectionObserver(
+  ([entry]) => {
+    filtersPassed = !entry.isIntersecting;
+    if (entry.isIntersecting) closeSheet();
+    updateFabVisibility();
+  },
+  { threshold: 0 }
+).observe(filtersSentinel);
+
+const footerEl = document.querySelector(".site-footer");
+if (footerEl) {
+  new IntersectionObserver(
+    ([entry]) => {
+      footerVisible = entry.isIntersecting;
+      updateFabVisibility();
+    },
+    { threshold: 0 }
+  ).observe(footerEl);
+}
 
 // ---- Initialisation --------------------------------------------------------
 
