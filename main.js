@@ -344,69 +344,73 @@ function renderEvents() {
     return;
   }
 
-  // Regroupe les événements par mois avec un grand titre de mois.
+  // Regroupe les événements par mois : grand titre de mois + grille de cards.
   let currentKey = null;
-  let group = null;
+  let grid = null;
   for (const ev of list) {
     const key = monthKey(ev.start);
     if (key !== currentKey) {
       currentKey = key;
-      group = document.createElement("section");
+      const group = document.createElement("section");
       group.className = "month-group";
       const heading = document.createElement("h2");
       heading.className = "month-title";
       heading.textContent = capitalize(monthLabel(ev.start));
+      grid = document.createElement("div");
+      grid.className = "events-grid";
       group.appendChild(heading);
+      group.appendChild(grid);
       eventsEl.appendChild(group);
     }
-    group.appendChild(buildRow(ev));
+    grid.appendChild(buildCard(ev));
   }
 }
 
-// Construit une ligne d'événement (date à gauche, détails à droite).
-function buildRow(ev) {
-  const row = document.createElement("button");
-  row.type = "button";
-  row.className = "event-row" + (isPast(ev) ? " past" : "");
+// Construit une card d'événement.
+function buildCard(ev) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "event-card" + (isPast(ev) ? " past" : "");
 
   const multi = isMultiDay(ev);
+  const dow = ev.allDay ? "" : DAYS_FR[ev.start.getDay()];
   const place = ev.place || "";
 
-  // Ligne date/heure de la méta.
-  let whenLine;
-  if (multi) {
-    whenLine = "📅 " + formatRange(ev.start, lastDay(ev), false);
-  } else if (ev.allDay) {
-    whenLine = "📅 Journée entière";
+  // Ligne d'horaire : masquée pour les journées entières sur plusieurs jours.
+  let timeLine;
+  if (ev.allDay) {
+    timeLine = multi ? "" : "Journée entière";
   } else {
-    whenLine =
-      "🕐 " + formatTime(ev.start) + (ev.end ? " – " + formatTime(ev.end) : "");
+    timeLine = `${formatTime(ev.start)}${ev.end ? " – " + formatTime(ev.end) : ""}`;
   }
 
-  row.innerHTML = `
-    <div class="row-date">
-      <span class="dow"></span>
-      <span class="day">${ev.start.getDate()}</span>
-      <span class="mon"></span>
-    </div>
-    <div class="row-body">
-      <h3 class="row-title"></h3>
-      <div class="row-meta">
-        <span class="card-sport"></span>
-        <span class="js-when"></span>
-        ${place ? '<span class="js-place"></span>' : ""}
-      </div>
+  const dateBlock = multi
+    ? `<div class="card-date card-date--range"><span class="range"></span></div>`
+    : `<div class="card-date">
+         <span class="day">${ev.start.getDate()}</span>
+         <span class="mon">${MONTHS_FR_SHORT[ev.start.getMonth()]}</span>
+         <span class="dow">${dow}</span>
+       </div>`;
+
+  card.innerHTML = `
+    ${dateBlock}
+    <span class="card-sport"></span>
+    <h3 class="card-title"></h3>
+    <div class="card-info">
+      ${timeLine ? '<span class="js-time"></span>' : ""}
+      ${place ? '<span class="js-place"></span>' : ""}
     </div>
   `;
-  row.querySelector(".row-date .dow").textContent = DAYS_FR[ev.start.getDay()];
-  row.querySelector(".row-date .mon").textContent = MONTHS_FR[ev.start.getMonth()];
-  row.querySelector(".row-title").textContent = ev.title;
-  row.querySelector(".card-sport").textContent = ev.sport;
-  row.querySelector(".js-when").textContent = whenLine;
-  if (place) row.querySelector(".js-place").textContent = "📍 " + place;
+  if (multi) {
+    card.querySelector(".range").textContent = formatRange(ev.start, lastDay(ev), false);
+  }
+  card.querySelector(".card-sport").textContent = ev.sport;
+  card.querySelector(".card-title").textContent = ev.title;
+  if (timeLine) card.querySelector(".js-time").textContent = "🕐 " + timeLine;
+  if (place) card.querySelector(".js-place").textContent = "📍 " + place;
 
-  row.addEventListener("click", () => openOverlay(ev));
-  return row;
+  card.addEventListener("click", () => openOverlay(ev));
+  return card;
 }
 
 // ---- Overlay --------------------------------------------------------------
