@@ -280,6 +280,7 @@ body {
 .filter-fab:hover { background: var(--brand-dark); }
 .filter-fab:active { transform: translateX(-50%) scale(0.97); }
 .filter-fab:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.fab-ico { display: block; }
 .fab-count {
   background: var(--accent);
   color: #fff;
@@ -356,7 +357,25 @@ body {
 }
 .filters.in-sheet .filter { width: 100%; }
 .filters.in-sheet .filter select { width: 100%; }
-.filters.in-sheet .result-count { margin: 0.2rem 0 0; }
+.filters.in-sheet .result-count { display: none; }
+
+.btn-apply {
+  display: block;
+  width: 100%;
+  margin-top: 1.1rem;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-apply:hover { background: var(--brand-dark); }
+.btn-apply:active { transform: scale(0.99); }
+.btn-apply:focus-visible { outline: 2px solid var(--brand-dark); outline-offset: 2px; }
 
 /* States */
 .state {
