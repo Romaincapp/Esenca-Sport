@@ -396,8 +396,10 @@ function buildCard(ev) {
       <h3 class="card-title"></h3>
       <div class="card-meta">
         <span class="card-sport"></span>
-        <span class="js-when"></span>
-        ${place ? '<span class="js-place"></span>' : ""}
+        <div class="card-sub">
+          <span class="js-when"></span>
+          ${place ? '<span class="js-place"></span>' : ""}
+        </div>
       </div>
     </div>
   `;
