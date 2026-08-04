@@ -20,7 +20,7 @@
   </header>
 
   <main class="wrap">
-    <section class="filters" aria-label="Filtres">
+    <section class="filters" id="filters" aria-label="Filtres">
       <div class="filter">
         <label for="filter-sport">Sport</label>
         <select id="filter-sport">
@@ -46,6 +46,7 @@
       <button id="reset-filters" type="button" class="btn-reset">Réinitialiser</button>
       <p id="result-count" class="result-count" aria-live="polite"></p>
     </section>
+    <div id="filters-sentinel" aria-hidden="true"></div>
 
     <section id="events" class="events" aria-live="polite">
       <div class="state" id="state-loading">
@@ -54,6 +55,25 @@
       </div>
     </section>
   </main>
+
+  <!-- Bouton flottant "Filtrer" (apparaît après avoir scrollé) -->
+  <button id="filter-fab" class="filter-fab" type="button" aria-expanded="false" hidden>
+    <span class="fab-ico" aria-hidden="true">⚙️</span>
+    <span>Filtrer</span>
+    <span id="fab-count" class="fab-count" hidden></span>
+  </button>
+
+  <!-- Feuille flottante contenant les filtres -->
+  <div id="filter-sheet" class="filter-sheet" hidden>
+    <div class="sheet-backdrop" data-close></div>
+    <div class="sheet-panel" role="dialog" aria-modal="true" aria-label="Filtres">
+      <div class="sheet-head">
+        <span>Filtrer les événements</span>
+        <button class="sheet-close" type="button" data-close aria-label="Fermer">&times;</button>
+      </div>
+      <div id="sheet-body" class="sheet-body"></div>
+    </div>
+  </div>
 
   <!-- Overlay détails -->
   <div class="overlay" id="overlay" hidden>

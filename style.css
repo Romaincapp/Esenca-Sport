@@ -255,6 +255,109 @@ body {
   letter-spacing: 0.03em;
 }
 
+/* Bouton flottant "Filtrer" + feuille */
+.filter-fab {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1rem;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 80, 140, 0.35);
+  transition: background 0.15s, transform 0.12s;
+}
+.filter-fab[hidden] { display: none; }
+.filter-fab:hover { background: var(--brand-dark); }
+.filter-fab:active { transform: translateX(-50%) scale(0.97); }
+.filter-fab:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.fab-count {
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.35rem;
+}
+.fab-count[hidden] { display: none; }
+
+.filter-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.filter-sheet[hidden] { display: none; }
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 30, 45, 0.45);
+  animation: fade 0.2s ease;
+}
+.sheet-panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  background: var(--card);
+  border-radius: 18px 18px 0 0;
+  padding: 1rem 1.2rem 1.5rem;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: sheetUp 0.25s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+@keyframes sheetUp { from { transform: translateY(100%); } }
+.sheet-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.9rem;
+}
+.sheet-close {
+  border: none;
+  background: var(--bg);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.sheet-close:hover { background: var(--brand-light); color: var(--brand-dark); }
+
+/* La barre de filtres, quand elle est déplacée dans la feuille */
+.filters.in-sheet {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.9rem;
+}
+.filters.in-sheet .filter { width: 100%; }
+.filters.in-sheet .filter select { width: 100%; }
+.filters.in-sheet .result-count { margin: 0.2rem 0 0; }
+
 /* States */
 .state {
   grid-column: 1 / -1;
