@@ -627,6 +627,48 @@ resetBtn.addEventListener("click", () => {
   renderEvents();
 });
 
+// ---- Référencement (données structurées schema.org) -----------------------
+
+// Publie les événements à venir au format JSON-LD "Event" : Google peut ainsi
+// les afficher comme événements d'Esenca Sport dans ses résultats de recherche.
+function isoDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function injectStructuredData(events) {
+  const organizer = { "@type": "SportsOrganization", name: "Esenca Sport" };
+  const upcoming = events.filter((e) => !isPast(e)).slice(0, 100);
+  if (upcoming.length === 0) return;
+
+  const data = upcoming.map((ev) => {
+    const item = {
+      "@context": "https://schema.org",
+      "@type": "SportsEvent",
+      name: `${ev.title} – Esenca Sport`,
+      sport: ev.sport,
+      startDate: ev.allDay ? isoDate(ev.start) : ev.start.toISOString(),
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      organizer,
+    };
+    if (ev.end) item.endDate = ev.allDay ? isoDate(lastDay(ev)) : ev.end.toISOString();
+    if (ev.place || ev.location) {
+      item.location = {
+        "@type": "Place",
+        name: ev.place || ev.location,
+        address: ev.location || ev.place,
+      };
+    }
+    if (ev.description) item.description = ev.description.slice(0, 500);
+    if (ev.url) item.url = ev.url;
+    return item;
+  });
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.textContent = JSON.stringify(data);
+  document.head.appendChild(script);
+}
+
 async function init() {
   if (!API_KEY || API_KEY === "REMPLACE_PAR_TA_CLE_API") {
     showError("Clé API manquante : renseigne API_KEY dans main.js.");
@@ -641,6 +683,7 @@ async function init() {
     }
     refreshFilters();
     renderEvents();
+    injectStructuredData(allEvents);
   } catch (err) {
     console.error(err);
     showError(err.message || "Erreur inattendue.");

@@ -3,7 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calendrier Esenca Sport</title>
+  <title>Calendrier Esenca Sport – Agenda des activités handisport et sport adapté</title>
+  <meta name="description" content="Calendrier officiel d'Esenca Sport : tous les rendez-vous handisport et sport adapté (dates, lieux, inscriptions). Filtrez par sport, par lieu et par mois." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Esenca Sport" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- Partage sur les réseaux sociaux (Facebook, WhatsApp, LinkedIn…) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_BE" />
+  <meta property="og:site_name" content="Esenca Sport" />
+  <meta property="og:title" content="Calendrier Esenca Sport" />
+  <meta property="og:description" content="Tous les rendez-vous handisport et sport adapté d'Esenca Sport : dates, lieux et inscriptions." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Calendrier Esenca Sport" />
+  <meta name="twitter:description" content="Tous les rendez-vous handisport et sport adapté d'Esenca Sport : dates, lieux et inscriptions." />
+
+  <!-- Données structurées : identifie la page comme le calendrier d'Esenca Sport -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Calendrier Esenca Sport",
+    "description": "Calendrier des activités handisport et sport adapté organisées par Esenca Sport.",
+    "inLanguage": "fr-BE",
+    "publisher": {
+      "@type": "SportsOrganization",
+      "name": "Esenca Sport",
+      "email": "esenca.sport@solidaris.be",
+      "telephone": "+32 81 77 78 15",
+      "memberOf": {
+        "@type": "SportsOrganization",
+        "name": "Sportéa",
+        "url": "https://sportea.be/"
+      }
+    }
+  }
+  </script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -49,6 +85,10 @@
     <div id="filters-sentinel" aria-hidden="true"></div>
 
     <section id="events" class="events" aria-live="polite">
+      <noscript>
+        <p>Le calendrier Esenca Sport a besoin de JavaScript pour afficher les activités handisport et sport adapté.
+        Contact : <a href="mailto:esenca.sport@solidaris.be">esenca.sport@solidaris.be</a> · 081 777 815.</p>
+      </noscript>
       <div class="state" id="state-loading">
         <div class="spinner" aria-hidden="true"></div>
         <p>Chargement des événements…</p>
