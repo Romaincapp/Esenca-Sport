@@ -736,6 +736,23 @@ function initNavMenu() {
       openItem.querySelector('.nav-menu-trigger').focus();
     }
   });
+
+  // Liens « copier » : copie l'URL dans le presse-papiers au lieu de l'ouvrir
+  document.querySelectorAll('.nav-menu-link[data-copy]').forEach((link) => {
+    const desc = link.querySelector('.nav-menu-link-desc');
+    const initial = desc ? desc.textContent : '';
+    link.addEventListener('click', async (e) => {
+      if (!navigator.clipboard) return; // sans presse-papiers : on suit le lien
+      e.preventDefault();
+      try {
+        await navigator.clipboard.writeText(link.href);
+        if (desc) desc.textContent = 'Lien copié ! Collez-le dans votre agenda.';
+      } catch {
+        if (desc) desc.textContent = 'Copie impossible : ' + link.href;
+      }
+      setTimeout(() => { if (desc) desc.textContent = initial; }, 3000);
+    });
+  });
 }
 
 initNavMenu();

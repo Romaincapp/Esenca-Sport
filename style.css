@@ -32,7 +32,6 @@ body {
 /* Header */
 .site-header {
   position: relative;
-  z-index: 10;
   color: #fff;
   padding: 2.6rem 0 3.8rem;
 }
@@ -41,11 +40,14 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   background: linear-gradient(120deg, var(--brand) 0%, #12b0f0 100%);
   clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
 }
+/* Contenu au-dessus de la carte de filtres (z-index 2), fond bleu en dessous */
 .header-inner {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -58,7 +60,8 @@ body {
 .nav-menu-list {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -598,5 +601,8 @@ body {
   .filters { flex-direction: column; align-items: stretch; }
   .filter select { width: 100%; }
   .result-count { margin: 0.2rem 0 0; }
-  .nav-menu-content { left: 0; right: auto; }
+  /* Sur mobile, les panneaux s'alignent sur toute la barre de navigation */
+  .nav-menu { position: relative; width: 100%; }
+  .nav-menu-item { position: static; }
+  .nav-menu-content { left: 0; right: auto; width: 100%; }
 }
