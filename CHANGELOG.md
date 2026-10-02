@@ -1,6 +1,7 @@
 # Historique des évolutions
 
 ## 2026-10
+- Menu Ressources : « Classements » et « Règlements » deviennent deux entrées séparées (même dossier Google Drive).
 - Menu compact sur mobile : trois boutons sur une ligne, libellé court « Agenda », panneaux plus serrés.
 - Tests de bout en bout Playwright (ordinateur + mobile) et exécution automatique sur GitHub.
 - Documentation (`docs/`).

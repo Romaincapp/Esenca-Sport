@@ -20,6 +20,9 @@ Dans `index.html`, copier un bloc `<li>` à l'intérieur du panneau voulu
 - Lien `mailto:` / `tel:` / `webcal:` : pas de `target`.
 - Ajouter une vérification du lien dans `tests/header-nav.spec.js` (« Contenu des menus »).
 
+> « Classements » et « Règlements » pointent volontairement vers le **même**
+> dossier Google Drive : si le dossier change, mettre à jour les deux liens.
+
 ## Ajouter un nouveau menu
 
 Dupliquer un bloc `<li class="nav-menu-item">…</li>` complet dans

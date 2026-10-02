@@ -117,11 +117,13 @@ test.describe("Menu compact sur mobile", () => {
 });
 
 test.describe("Contenu des menus", () => {
-  test("Ressources : classements et site de Sportéa", async ({ page }) => {
+  test("Ressources : classements, règlements et site de Sportéa", async ({ page }) => {
     await trigger(page, "Ressources").click();
     const menu = panel(page, "nav-ressources");
-    await expect(menu.getByRole("link", { name: /Classements et règlements/ }))
-      .toHaveAttribute("href", /drive\.google\.com\/drive\/folders\//);
+    // Deux entrées distinctes pour la lisibilité, même dossier Google Drive.
+    const drive = /drive\.google\.com\/drive\/folders\//;
+    await expect(menu.getByRole("link", { name: /Classements/ })).toHaveAttribute("href", drive);
+    await expect(menu.getByRole("link", { name: /Règlements/ })).toHaveAttribute("href", drive);
     await expect(menu.getByRole("link", { name: /Site de Sportéa/ }))
       .toHaveAttribute("href", "https://sportea.be/");
   });
