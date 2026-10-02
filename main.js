@@ -690,4 +690,53 @@ async function init() {
   }
 }
 
+// Navigation menu du header : ouverture au clic (et au survol sur ordinateur)
+function initNavMenu() {
+  const items = document.querySelectorAll('.nav-menu-item');
+  const hoverCapable = window.matchMedia('(hover: hover)').matches;
+
+  const setOpen = (item, open) => {
+    const trigger = item.querySelector('.nav-menu-trigger');
+    const content = item.querySelector('.nav-menu-content');
+    if (!trigger || !content) return;
+    trigger.setAttribute('aria-expanded', String(open));
+    content.hidden = !open;
+  };
+  const closeAll = (except) => items.forEach((it) => { if (it !== except) setOpen(it, false); });
+
+  items.forEach((item) => {
+    const trigger = item.querySelector('.nav-menu-trigger');
+    if (!trigger) return;
+    let openedByHover = false;
+    trigger.addEventListener('click', () => {
+      // Un clic juste après l'ouverture au survol garde le menu ouvert
+      const open = openedByHover || trigger.getAttribute('aria-expanded') !== 'true';
+      openedByHover = false;
+      closeAll(item);
+      setOpen(item, open);
+    });
+    if (hoverCapable) {
+      let timer;
+      item.addEventListener('mouseenter', () => { clearTimeout(timer); closeAll(item); openedByHover = trigger.getAttribute('aria-expanded') !== 'true'; setOpen(item, true); });
+      item.addEventListener('mouseleave', () => { timer = setTimeout(() => { openedByHover = false; setOpen(item, false); }, 150); });
+    }
+    item.addEventListener('focusout', (e) => {
+      if (!item.contains(e.relatedTarget)) setOpen(item, false);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.nav-menu')) closeAll();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const openItem = [...items].find((it) => it.querySelector('.nav-menu-trigger[aria-expanded="true"]'));
+    if (openItem) {
+      setOpen(openItem, false);
+      openItem.querySelector('.nav-menu-trigger').focus();
+    }
+  });
+}
+
+initNavMenu();
 init();
