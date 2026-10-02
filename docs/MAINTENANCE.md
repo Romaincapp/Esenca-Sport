@@ -30,8 +30,16 @@ Dupliquer un bloc `<li class="nav-menu-item">…</li>` complet dans
 
 Aucun JavaScript à écrire. Ajouter le menu à la liste des tests
 « les trois menus sont présents » et « le panneau reste entièrement visible ».
-Vérifier sur mobile (`npm test` couvre un écran de téléphone) : les boutons
-passent à la ligne automatiquement.
+Sur mobile, les boutons doivent tenir **sur une seule ligne** (vérifié par les
+tests, jusqu'à 360 px de large). Si le libellé est long, prévoir un libellé court :
+
+```html
+<span class="nav-menu-label-full">Ajouter l'agenda</span>
+<span class="nav-menu-label-short" aria-hidden="true">Agenda</span>
+```
+
+Au-delà de quatre menus, la ligne mobile sera trop chargée : envisager alors un
+bouton unique « Menu » qui regroupe tout sur mobile.
 
 ## Changer une information de contact
 

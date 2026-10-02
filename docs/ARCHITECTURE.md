@@ -42,8 +42,13 @@ réécrit en HTML/CSS/JS natif (shadcn/ui nécessite React).
   - Échap : ferme et rend le focus au bouton ; clic extérieur ou perte de focus : ferme ;
   - lien avec l'attribut `data-copy` : copie son `href` dans le presse-papiers
     au lieu de l'ouvrir (utilisé pour « Copier le lien iCal »).
-- **CSS** (`style.css`, section « Navigation menu ») : sur mobile (≤ 560 px) les
-  panneaux prennent toute la largeur de la barre de navigation.
+- **CSS** (`style.css`, section « Navigation menu » et media query `max-width: 560px`) :
+  version **compacte sur mobile** (≤ 560 px) :
+  - les boutons restent sur une seule ligne, plus petits, largeur proportionnelle au texte ;
+  - un bouton peut avoir un libellé court (`.nav-menu-label-short`, ex. « Agenda »)
+    affiché à la place du libellé complet (`.nav-menu-label-full`, ex. « Ajouter l'agenda »),
+    qui reste lu par les lecteurs d'écran ;
+  - les panneaux prennent toute la largeur de la barre et sont plus serrés.
 
 ### Liens « Ajouter l'agenda »
 

@@ -86,6 +86,36 @@ test.describe("Menus de navigation", () => {
   });
 });
 
+test.describe("Menu compact sur mobile", () => {
+  test("les trois boutons tiennent sur une seule ligne", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "Spécifique au mobile");
+    const tops = await page.locator(".nav-menu-trigger").evaluateAll((els) =>
+      els.map((el) => Math.round(el.getBoundingClientRect().top))
+    );
+    expect(new Set(tops).size).toBe(1);
+  });
+
+  test("les libellés et flèches ne sont pas coupés sur petit écran (360 px)", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "Spécifique au mobile");
+    await page.setViewportSize({ width: 360, height: 700 });
+    const overflowing = await page.locator(".nav-menu-trigger").evaluateAll((els) =>
+      els.filter((el) => el.scrollWidth > el.clientWidth).map((el) => el.textContent.trim())
+    );
+    expect(overflowing).toEqual([]);
+  });
+
+  test("libellé court « Agenda », nom complet conservé pour l'accessibilité", async ({ page, isMobile }) => {
+    const btn = trigger(page, "Ajouter l'agenda");
+    await expect(btn).toBeVisible();
+    if (isMobile) {
+      await expect(btn.locator(".nav-menu-label-short")).toBeVisible();
+      await expect(btn).toHaveText(/Agenda/);
+    } else {
+      await expect(btn.locator(".nav-menu-label-short")).toBeHidden();
+    }
+  });
+});
+
 test.describe("Contenu des menus", () => {
   test("Ressources : classements et site de Sportéa", async ({ page }) => {
     await trigger(page, "Ressources").click();

@@ -49,7 +49,7 @@ test("agenda vide", async ({ page }) => {
 
 | Fichier | Couvre |
 | --- | --- |
-| `tests/header-nav.spec.js` | Menus (ouverture, fermeture, survol, Échap, clic extérieur, un seul ouvert), contenu et liens des menus, copie du lien iCal, cohérence du téléphone, superposition header / filtres |
+| `tests/header-nav.spec.js` | Menus (ouverture, version compacte mobile, fermeture, survol, Échap, clic extérieur, un seul ouvert), contenu et liens des menus, copie du lien iCal, cohérence du téléphone, superposition header / filtres |
 | `tests/calendar.spec.js` | Affichage des événements, découpage sport/lieu, filtres, événements passés, overlay et lien d'inscription, données structurées, erreurs de l'API |
 
 ## Écrire un nouveau test
