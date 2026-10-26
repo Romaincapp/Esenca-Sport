@@ -23,8 +23,8 @@ function sampleEvents() {
       status: "confirmed",
       summary: "E.S. | Foot - Philippeville",
       description: "Tournoi amical. Inscriptions : https://example.org/inscription-foot",
-      start: { dateTime: `${dayOffset(5)}T10:00:00+02:00` },
-      end: { dateTime: `${dayOffset(5)}T16:00:00+02:00` },
+      start: { dateTime: `${dayOffset(5)}T10:00:00` },
+      end: { dateTime: `${dayOffset(5)}T16:00:00` },
     },
     {
       id: "natation",
@@ -37,21 +37,21 @@ function sampleEvents() {
       id: "boccia",
       status: "confirmed",
       summary: "E.S. | Boccia - Charleroi",
-      start: { dateTime: `${dayOffset(20)}T14:00:00+02:00` },
-      end: { dateTime: `${dayOffset(20)}T17:00:00+02:00` },
+      start: { dateTime: `${dayOffset(20)}T14:00:00` },
+      end: { dateTime: `${dayOffset(20)}T17:00:00` },
     },
     {
       id: "passe",
       status: "confirmed",
       summary: "E.S. | Foot - Dinant",
-      start: { dateTime: `${dayOffset(-30)}T10:00:00+02:00` },
-      end: { dateTime: `${dayOffset(-30)}T12:00:00+02:00` },
+      start: { dateTime: `${dayOffset(-30)}T10:00:00` },
+      end: { dateTime: `${dayOffset(-30)}T12:00:00` },
     },
     {
       id: "annule",
       status: "cancelled",
       summary: "E.S. | Tennis - Liège",
-      start: { dateTime: `${dayOffset(8)}T10:00:00+02:00` },
+      start: { dateTime: `${dayOffset(8)}T10:00:00` },
     },
   ];
 }

@@ -1,6 +1,7 @@
 # Historique des évolutions
 
 ## 2026-10
+- Tests : les heures des faux événements ne dépendent plus du fuseau horaire (CI au vert).
 - Filtre Sport : « Bowling Groupe 1/2 », « Pétanque Groupe 1/2 »… sont regroupés sous « Bowling », « Pétanque »…
 - Menu Ressources : « Classements » et « Règlements » deviennent deux entrées séparées (même dossier Google Drive).
 - Menu compact sur mobile : trois boutons sur une ligne, libellé court « Agenda », panneaux plus serrés.
