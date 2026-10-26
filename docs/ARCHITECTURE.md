@@ -15,7 +15,9 @@ framework ni étape de compilation. `package.json` ne sert qu'aux tests.
    - le lien d'inscription (`extractLink`) est, dans l'ordre : la première URL
      de la description, sinon `source.url`, sinon le lien Google Agenda.
 3. `refreshFilters` remplit les listes Sport / Lieu / Mois ; `renderEvents`
-   affiche les cartes groupées par mois.
+   affiche les cartes groupées par mois. Dans le filtre Sport, `sportGroup`
+   regroupe « X Groupe 1 », « X Groupe 2 »… sous « X » (les cartes gardent
+   le nom complet).
 4. `injectStructuredData` ajoute un JSON-LD `SportsEvent` par événement (SEO).
 
 > **Convention de nommage dans Google Agenda** : `E.S. | <Sport> - <Lieu>`.
