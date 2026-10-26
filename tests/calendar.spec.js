@@ -50,6 +50,24 @@ test.describe("Filtres", () => {
     await expect(cards(page)).toHaveCount(3);
   });
 
+  test("regroupe les « Groupe N » sous un seul sport", async ({ page }) => {
+    await mockCalendar(page, {
+      items: [1, 2].map((n) => ({
+        id: `bowling${n}`,
+        status: "confirmed",
+        summary: `E.S. | Bowling Groupe ${n} - Namur`,
+        start: { date: "2099-01-0" + n },
+        end: { date: "2099-01-0" + (n + 1) },
+      })),
+    });
+    await page.goto("/");
+    await expect(cards(page)).toHaveCount(2);
+    const options = await page.locator("#filter-sport option").allTextContents();
+    expect(options).toEqual(["Tous les sports", "Bowling"]);
+    await page.selectOption("#filter-sport", "Bowling");
+    await expect(cards(page)).toHaveCount(2);
+  });
+
   test("filtre par lieu", async ({ page }) => {
     await page.selectOption("#filter-place", "Charleroi");
     await expect(cards(page)).toHaveCount(1);

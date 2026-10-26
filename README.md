@@ -3,7 +3,7 @@
 Site statique (HTML, CSS, JavaScript sans framework) qui affiche les activités
 handisport et sport adapté d'Esenca Sport à partir d'un **Google Agenda public**.
 
-- Filtres par sport, lieu et mois, avec option « voir les événements passés ».
+- Filtres par sport (les « Groupe 1/2 » sont regroupés, ex. « Bowling »), lieu et mois, avec option « voir les événements passés ».
 - Au clic sur un événement : overlay de détails avec bouton d'inscription.
 - Header avec menus de navigation : **Ressources**, **Contact**, **Ajouter l'agenda**
   (abonnement Google Agenda, Outlook, Apple, lien iCal).

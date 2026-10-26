@@ -233,6 +233,11 @@ function isPast(e) {
 function baseEvents() {
   return pastCheckbox.checked ? allEvents : allEvents.filter((e) => !isPast(e));
 }
+// Le filtre sport regroupe les variantes « X Groupe N » sous « X » : une
+// personne inscrite au bowling (groupe 1 ou 2) choisit simplement « Bowling ».
+function sportGroup(sport) {
+  return sport.replace(/\s+groupe\s*\d+\s*$/i, "");
+}
 const resetBtn = document.getElementById("reset-filters");
 const resultCount = document.getElementById("result-count");
 
@@ -243,7 +248,7 @@ function eventsMatching(exclude) {
   const place = placeSelect.value;
   const month = monthSelect.value;
   return baseEvents().filter((e) => {
-    if (exclude !== "sport" && sport && e.sport !== sport) return false;
+    if (exclude !== "sport" && sport && sportGroup(e.sport) !== sport) return false;
     if (exclude !== "place" && place && e.place !== place) return false;
     if (exclude !== "month" && month && monthKey(e.start) !== month) return false;
     return true;
@@ -254,7 +259,7 @@ function eventsMatching(exclude) {
 function optionList(name) {
   const evs = eventsMatching(name);
   if (name === "sport") {
-    return [...new Set(evs.map((e) => e.sport))]
+    return [...new Set(evs.map((e) => sportGroup(e.sport)))]
       .sort((a, b) => a.localeCompare(b, "fr"))
       .map((v) => [v, v]);
   }
@@ -320,7 +325,7 @@ function getFiltered() {
   const place = placeSelect.value;
   const month = monthSelect.value;
   return baseEvents().filter((e) => {
-    if (sport && e.sport !== sport) return false;
+    if (sport && sportGroup(e.sport) !== sport) return false;
     if (place && e.place !== place) return false;
     if (month && monthKey(e.start) !== month) return false;
     return true;
