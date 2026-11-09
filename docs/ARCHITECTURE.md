@@ -25,6 +25,10 @@ framework ni étape de compilation. `package.json` ne sert qu'aux tests.
 > Le champ **Lieu** de l'événement (adresse complète) est facultatif : s'il est
 > rempli, il s'affiche sur la carte et dans l'overlay (lien Google Maps) ; le
 > filtre « Lieu » reste basé sur le titre.
+> La **description** peut être en texte brut ou en HTML (Google Agenda produit
+> du HTML dès qu'on insère un lien) : `descToFragment` ne garde que les liens
+> http(s), les retours à la ligne, le gras/italique et les listes ; le reste
+> devient du texte.
 
 ## Clé API
 

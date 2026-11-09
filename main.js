@@ -435,16 +435,93 @@ const ovPlace = document.getElementById("ov-place");
 const ovDesc = document.getElementById("ov-desc");
 const ovLink = document.getElementById("ov-link");
 
-// Transforme une description texte en HTML sûr, avec liens cliquables.
-function descToHtml(text) {
-  const escaped = text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-  return escaped.replace(
-    /(https?:\/\/[^\s]+)/g,
-    '<a href="$1" target="_blank" rel="noopener">$1</a>'
-  );
+// ---- Description ----------------------------------------------------------
+// Google Agenda enregistre la description soit en texte brut, soit en HTML
+// (liens <a>, <br>, gras…). On la reconstruit en nœuds DOM sûrs : seules
+// quelques balises de mise en forme et les liens http(s) sont conservés,
+// tout le reste devient du texte. Les URL nues deviennent cliquables.
+
+const URL_RE = /https?:\/\/[^\s<>"']+/g;
+const DESC_INLINE = new Set(["B", "STRONG", "I", "EM", "U"]);
+const DESC_BLOCK = new Set(["P", "DIV", "UL", "OL", "H1", "H2", "H3", "H4", "H5", "H6"]);
+
+function makeLink(href, text) {
+  const a = document.createElement("a");
+  a.href = href;
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.textContent = text || href;
+  return a;
+}
+
+// Ajoute du texte en rendant les URL cliquables.
+function appendLinkified(out, text) {
+  let last = 0;
+  for (const m of text.matchAll(URL_RE)) {
+    if (m.index > last) out.append(text.slice(last, m.index));
+    out.append(makeLink(m[0]));
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.append(text.slice(last));
+}
+
+function endsWithNewline(out) {
+  return /\n$/.test(out.textContent || "");
+}
+
+function appendSafeNodes(source, out) {
+  for (const node of source.childNodes) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      appendLinkified(out, node.textContent);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const tag = node.tagName;
+      if (tag === "BR") {
+        out.append("\n");
+      } else if (tag === "A") {
+        const href = node.getAttribute("href") || "";
+        if (/^https?:\/\//i.test(href)) out.append(makeLink(href, node.textContent.trim()));
+        else appendSafeNodes(node, out);
+      } else if (DESC_INLINE.has(tag)) {
+        const el = document.createElement(tag.toLowerCase());
+        appendSafeNodes(node, el);
+        out.append(el);
+      } else if (tag === "LI") {
+        if (out.textContent && !endsWithNewline(out)) out.append("\n");
+        out.append("• ");
+        appendSafeNodes(node, out);
+        out.append("\n");
+      } else if (DESC_BLOCK.has(tag)) {
+        if (out.textContent && !endsWithNewline(out)) out.append("\n");
+        appendSafeNodes(node, out);
+        if (!endsWithNewline(out)) out.append("\n");
+      } else if (tag !== "SCRIPT" && tag !== "STYLE") {
+        appendSafeNodes(node, out);
+      }
+    }
+  }
+}
+
+// Description → fragment DOM sûr, prêt à insérer dans l'overlay.
+function descToFragment(desc) {
+  const frag = document.createDocumentFragment();
+  if (/<\/?[a-z][^>]*>/i.test(desc)) {
+    // DOMParser n'exécute aucun script ni ne charge aucune ressource.
+    const doc = new DOMParser().parseFromString(desc, "text/html");
+    appendSafeNodes(doc.body, frag);
+  } else {
+    appendLinkified(frag, desc);
+  }
+  // Retire les retours à la ligne superflus en fin de texte.
+  while (frag.lastChild && frag.lastChild.nodeType === Node.TEXT_NODE &&
+         !frag.lastChild.textContent.trim()) {
+    frag.lastChild.remove();
+  }
+  return frag;
+}
+
+// Description en texte brut (données structurées).
+function descToText(desc) {
+  return descToFragment(desc).textContent.trim();
 }
 
 function openOverlay(ev) {
@@ -482,7 +559,8 @@ function openOverlay(ev) {
     ovPlaceRow.style.display = "none";
   }
 
-  ovDesc.innerHTML = ev.description ? descToHtml(ev.description) : "";
+  ovDesc.replaceChildren();
+  if (ev.description) ovDesc.append(descToFragment(ev.description));
 
   if (ev.url) {
     ovLink.href = ev.url;
@@ -677,7 +755,7 @@ function injectStructuredData(events) {
         address: ev.location || ev.place,
       };
     }
-    if (ev.description) item.description = ev.description.slice(0, 500);
+    if (ev.description) item.description = descToText(ev.description).slice(0, 500);
     if (ev.url) item.url = ev.url;
     return item;
   });
