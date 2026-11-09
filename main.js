@@ -381,7 +381,9 @@ function buildCard(ev) {
   card.className = "event-card" + (isPast(ev) ? " past" : "");
 
   const multi = isMultiDay(ev);
-  const place = ev.place || "";
+  // Adresse complète (champ « Lieu » de Google Agenda) si elle existe,
+  // sinon le lieu tiré du titre.
+  const place = ev.location || ev.place || "";
 
   // Ligne date/heure de la méta.
   let whenLine;
@@ -460,10 +462,22 @@ function openOverlay(ev) {
       formatTime(ev.start) + (ev.end ? " – " + formatTime(ev.end) : "");
   }
 
-  const place = ev.place || ev.location;
-  if (place) {
+  // Adresse complète si renseignée dans Google Agenda (avec lien vers la
+  // carte), sinon le lieu tiré du titre.
+  ovPlace.textContent = "";
+  if (ev.location) {
     ovPlaceRow.style.display = "";
-    ovPlace.textContent = place;
+    const a = document.createElement("a");
+    a.href =
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(ev.location);
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = ev.location;
+    ovPlace.appendChild(a);
+  } else if (ev.place) {
+    ovPlaceRow.style.display = "";
+    ovPlace.textContent = ev.place;
   } else {
     ovPlaceRow.style.display = "none";
   }
