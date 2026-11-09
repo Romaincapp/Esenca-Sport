@@ -1,6 +1,7 @@
 # Historique des évolutions
 
 ## 2026-11
+- Correction : les descriptions saisies en HTML dans Google Agenda (liens, retours à la ligne, gras) sont interprétées au lieu d'afficher les balises `<a href=…>`.
 - Adresse complète : si le champ « Lieu » de l'événement Google Agenda est rempli, l'adresse s'affiche sur la carte et dans la fiche (avec lien vers Google Maps).
 
 ## 2026-10

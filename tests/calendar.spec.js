@@ -116,6 +116,42 @@ test.describe("Overlay de détails", () => {
     await expect(page.locator("#ov-place a")).toHaveCount(0);
   });
 
+  test("interprète une description HTML (liens, retours à la ligne) sans afficher les balises", async ({ page }) => {
+    await mockCalendar(page, {
+      items: [{
+        id: "minifoot",
+        status: "confirmed",
+        summary: "E.S. | Minifoot - Aiseau-Presles",
+        description:
+          'Inscriptions :<br><a href="https://forms.gle/abc123">https://forms.gle/abc123</a>' +
+          '<br><b>Gratuit</b><img src="x" onerror="window.__xss = true">',
+        start: { date: "2099-01-05" },
+        end: { date: "2099-01-06" },
+      }],
+    });
+    await page.goto("/");
+    await cards(page).first().click();
+    const desc = page.locator("#ov-desc");
+    await expect(desc).not.toContainText("<a");
+    await expect(desc).not.toContainText("href");
+    await expect(desc).toHaveText("Inscriptions :\nhttps://forms.gle/abc123\nGratuit");
+    await expect(desc.locator("a")).toHaveAttribute("href", "https://forms.gle/abc123");
+    await expect(desc.locator("a")).toHaveAttribute("target", "_blank");
+    await expect(desc.locator("b")).toHaveText("Gratuit");
+    await expect(desc.locator("img")).toHaveCount(0);
+    expect(await page.evaluate(() => window.__xss)).toBeUndefined();
+    await expect(page.locator("#ov-link")).toHaveAttribute("href", "https://forms.gle/abc123");
+  });
+
+  test("rend cliquables les liens d'une description en texte brut", async ({ page }) => {
+    await cards(page).filter({ hasText: "Philippeville" }).click();
+    await expect(page.locator("#ov-desc")).toHaveText(
+      "Tournoi amical. Inscriptions : https://example.org/inscription-foot"
+    );
+    await expect(page.locator("#ov-desc a"))
+      .toHaveAttribute("href", "https://example.org/inscription-foot");
+  });
+
   test("désactive le bouton quand il n'y a pas de lien d'inscription", async ({ page }) => {
     await cards(page).filter({ hasText: "Namur" }).click();
     await expect(page.locator("#ov-link")).toHaveText("Aucun lien d'inscription");
