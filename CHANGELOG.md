@@ -1,5 +1,8 @@
 # Historique des évolutions
 
+## 2026-11
+- Adresse complète : si le champ « Lieu » de l'événement Google Agenda est rempli, l'adresse s'affiche sur la carte et dans la fiche (avec lien vers Google Maps).
+
 ## 2026-10
 - Tests : les heures des faux événements ne dépendent plus du fuseau horaire (CI au vert).
 - Filtre Sport : « Bowling Groupe 1/2 », « Pétanque Groupe 1/2 »… sont regroupés sous « Bowling », « Pétanque »…

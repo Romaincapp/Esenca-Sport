@@ -37,6 +37,7 @@ function sampleEvents() {
       id: "boccia",
       status: "confirmed",
       summary: "E.S. | Boccia - Charleroi",
+      location: "Rue de la Science 1, 6000 Charleroi, Belgique",
       start: { dateTime: `${dayOffset(20)}T14:00:00` },
       end: { dateTime: `${dayOffset(20)}T17:00:00` },
     },

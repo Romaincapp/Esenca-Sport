@@ -532,6 +532,7 @@ body {
   color: var(--ink);
 }
 .ov-meta .ic { flex: none; }
+#ov-place a { color: inherit; text-decoration: underline; overflow-wrap: anywhere; }
 .ov-desc {
   font-size: 0.94rem;
   color: var(--muted);

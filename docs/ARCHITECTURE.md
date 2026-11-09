@@ -22,6 +22,9 @@ framework ni étape de compilation. `package.json` ne sert qu'aux tests.
 
 > **Convention de nommage dans Google Agenda** : `E.S. | <Sport> - <Lieu>`.
 > Un titre qui ne la respecte pas s'affiche quand même, mais filtre moins bien.
+> Le champ **Lieu** de l'événement (adresse complète) est facultatif : s'il est
+> rempli, il s'affiche sur la carte et dans l'overlay (lien Google Maps) ; le
+> filtre « Lieu » reste basé sur le titre.
 
 ## Clé API
 

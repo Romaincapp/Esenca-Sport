@@ -98,6 +98,24 @@ test.describe("Overlay de détails", () => {
     await expect(overlay).toBeHidden();
   });
 
+  test("affiche l'adresse complète avec un lien vers la carte", async ({ page }) => {
+    const adresse = "Rue de la Science 1, 6000 Charleroi, Belgique";
+    await expect(cards(page).filter({ hasText: "Boccia" })).toContainText("📍 " + adresse);
+    await cards(page).filter({ hasText: "Boccia" }).click();
+    const link = page.locator("#ov-place a");
+    await expect(link).toHaveText(adresse);
+    await expect(link).toHaveAttribute(
+      "href",
+      "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(adresse)
+    );
+  });
+
+  test("sans adresse, affiche le lieu tiré du titre", async ({ page }) => {
+    await cards(page).filter({ hasText: "Namur" }).click();
+    await expect(page.locator("#ov-place")).toHaveText("Namur");
+    await expect(page.locator("#ov-place a")).toHaveCount(0);
+  });
+
   test("désactive le bouton quand il n'y a pas de lien d'inscription", async ({ page }) => {
     await cards(page).filter({ hasText: "Namur" }).click();
     await expect(page.locator("#ov-link")).toHaveText("Aucun lien d'inscription");
